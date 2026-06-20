@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>不二的个人看板</title>
+<title>Starlight的个人看板</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif+SC:wght@400;700;900&family=Caveat:wght@400;700&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1781,9 +1781,9 @@ a, button, [onclick], input[type='file'], .tab-btn, .cal-cell, .cal-nav, .cal-fi
   <!-- Header -->
   <div class="header">
     <div class="header-deco"></div>
-    <img class="header-avatar" src="../../assets/image_face.png" alt="esther">
+    <img class="header-avatar" src="../../assets/image_face.png" alt="starlight">
     <div class="header-info">
-      <div class="header-tagline">esther's space ✦</div>
+      <div class="header-tagline">starlight's space ✦</div>
       <div class="greeting" id="greeting"></div>
       <div class="greeting-sub">personal dashboard</div>
     </div>
@@ -2927,7 +2927,7 @@ function exportJSON() {
 
 function exportMarkdown() {
   const dateStr = TODAY;
-  let md = `# Esther's Dashboard Export\n## ${dateStr}\n\n`;
+  let md = `# Starlight's Dashboard Export\n## ${dateStr}\n\n`;
 
   // 日历记录
   const mood = load(`buer_mood_${dateStr}`, null);
@@ -3005,7 +3005,7 @@ function exportMarkdown() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `esther-dashboard-${dateStr}.md`;
+  a.download = `starlight-dashboard-${dateStr}.md`;
   a.click();
   URL.revokeObjectURL(url);
 }
