@@ -71,7 +71,7 @@ esther-design-system/
 │   ├── template-app.html           App型模板
 │   ├── template-cards.html         小红书卡片模板
 │   ├── html2canvas.min.js          卡片导出依赖
-│   └── face.jpg                  IP头像
+│   └── face.png                  IP头像
 └── references/                 ← 规则和零件(知识库)
     ├── layouts.md                  15种布局模式(附完整代码)
     ├── components.md               组件库(20+组件,完整HTML+CSS)
@@ -164,7 +164,7 @@ AI 每次做设计必须按这个顺序走:
 
 ## 怎么用
 
-发这个链接给你的 AI Agent(推荐使用 [Cola](https://colaos.ai)):
+发这个链接给你的 AI Agent:
 
 ```
 https://github.com/esthersjw/esther-design-system
@@ -182,6 +182,4 @@ https://github.com/esthersjw/esther-design-system
 
 Made by **星星电灯Starlight** — 在 AI 时代认真生活的创作者
 
-这套设计系统由 [Cola](https://colaos.ai) 协助构建。Cola 是首个有灵魂的操作系统。
-
-灵感来源:归藏 op7418 的 PPT Design Skill
+灵感来源:esthersjw 的 Esther's Design Skill

@@ -62,7 +62,7 @@
 ### P1 封面
 - 大标题（84px）用汇文明朝体（Huiwen Mincho），关键词用深松绿高亮块（`background: #306848; color: #fff; padding: 4px 16px; border-radius: 6px`）
 - 副标题（44px）一行显示，紧跟标题下方，`white-space: nowrap`
-- 圆形头像（`face.jpg`，120px，`border: 4px solid #D090B8`）
+- 圆形头像（`face.png`，120px，`border: 4px solid #D090B8`）
 - 署名「Esther不二」44px + 介绍34px
 - 整体边框：`border: 28px solid #D090B8`
 - 背景加浅色网格质感（`background-image: linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px); background-size: 40px 40px`）
@@ -102,7 +102,7 @@
 ## 🏷️ 品牌规范引用
 
 - 所有颜色、字体、禁忌遵守 `brand-dna.md`
-- 头像文件：`assets/face.jpg`
+- 头像文件：`assets/face.png`
 - 署名固定为：「Esther不二」
 - 品牌三色比例：深松绿6 : 粉紫3 : 柠檬黄1
 - 背景主色：暖白 `#FCFAF6` / 次背景 `#F3F6EF`，深色面板用 `#1A1A2E`
