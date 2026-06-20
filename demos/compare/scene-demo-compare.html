@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>方案A 多场景对比</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif;
+      font-size: 16px;
+      background: #eee;
+      padding: 0;
+    }
+
+    .top-bar {
+      background: #1A1A2E;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .compare-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: #ccc;
+    }
+
+    .scene {
+      padding: 3rem 2rem;
+    }
+
+    .scene-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.5;
+      margin-bottom: 1.5rem;
+    }
+
+    h3 { font-size: 1rem; font-weight: 700; margin-bottom: .3rem; }
+
+    /* ========== 原版 CSS 变量 ========== */
+    .orig {
+      --bg: #fefcf6;
+      --bg-card: #faf6eb;
+      --primary: #2B7FD8;
+      --accent: #F4D758;
+      --pop: #E84A5F;
+      --text: #1A1A2E;
+      --text-secondary: #4A4A5A;
+      --text-muted: #888;
+      --border: #e8e8e0;
+    }
+
+    /* ========== 方案A CSS 变量 ========== */
+    .scheme-a {
+      --bg: #FCFAF5;
+      --bg-card: #F5EFE4;
+      --primary: #6d98ba;
+      --accent: #f59356;
+      --pop: #ff6366;
+      --text: #1A1A2E;
+      --text-secondary: #4A4A5A;
+      --text-muted: #888;
+      --border: #ece8dc;
+      --olive: #8f8c3d;
+    }
+
+    /* ========== 场景 1: Hero ========== */
+    .hero {
+      background: var(--bg);
+      text-align: center;
+      padding: 4rem 1rem;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      color: var(--primary);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+    .hero-cta {
+      display: inline-block;
+      padding: 12px 36px;
+      background: var(--pop);
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 4px 14px;
+      background: var(--accent);
+      color: var(--text);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ========== 场景 2: 文章列表 ========== */
+    .article-list {
+      background: var(--bg);
+      padding: 2rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .article-item {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .article-item:first-child { padding-top: 0; }
+    .article-item h3 {
+      color: var(--primary);
+      font-size: 1.2rem;
+      margin-bottom: 0.4rem;
+    }
+    .article-item h3 a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .article-meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .article-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      background: var(--accent);
+      color: var(--text);
+      border-radius: 3px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      margin-right: 4px;
+    }
+    .article-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ========== 场景 3: 卡片网格 ========== */
+    .card-grid {
+      background: var(--bg);
+      padding: 2rem;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    .card h4 { font-size: 1rem; margin-bottom: 0.4rem; color: var(--text); }
+    .card p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; }
+    .card .highlight {
+      color: var(--pop);
+      font-weight: 700;
+    }
+
+    /* ========== 场景 4: 个人介绍区 ========== */
+    .profile-section {
+      background: var(--bg);
+      padding: 2rem;
+    }
+    .profile-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 2rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    @media (max-width: 500px) { .profile-card { flex-direction: column; text-align: center; } }
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+    .profile-info h4 { font-size: 1.1rem; color: var(--text); }
+    .profile-info .role { font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+    .profile-info .bio { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+    .profile-link {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 2px;
+    }
+
+    /* ========== 场景 5: Footer ========== */
+    .site-footer {
+      background: var(--text);
+      color: #ccc;
+      padding: 2.5rem 2rem 1.5rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto 2rem;
+    }
+    @media (max-width: 500px) { .footer-grid { grid-template-columns: 1fr; } }
+    .footer-grid h4 {
+      color: #fff;
+      font-size: 0.85rem;
+      margin-bottom: 0.8rem;
+    }
+    .footer-grid a {
+      display: block;
+      color: #999;
+      text-decoration: none;
+      font-size: 0.8rem;
+      margin-bottom: 0.3rem;
+    }
+    .footer-grid a:hover { color: var(--accent); }
+    .footer-bottom {
+      max-width: 900px;
+      margin: 0 auto;
+      padding-top: 1.5rem;
+      border-top: 1px solid #333;
+      font-size: 0.75rem;
+      color: #666;
+      display: flex;
+      justify-content: space-between;
+    }
+    .footer-bottom a { color: var(--accent); text-decoration: none; }
+    .newsletter-box {
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 0.5rem;
+    }
+    .newsletter-box input {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.85rem;
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+    .newsletter-box button {
+      padding: 8px 20px;
+      background: var(--pop);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    /* ========== 场景 6: 引用/对话 ========== */
+    .testimonial-section {
+      background: var(--bg);
+      padding: 2rem;
+    }
+    .testimonial {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .testimonial blockquote {
+      border-left: 4px solid var(--olive, var(--accent));
+      padding: 1rem 1.5rem;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      background: var(--bg-card);
+      margin-bottom: 1rem;
+    }
+    .bubble-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .bubble {
+      padding: 8px 16px;
+      border-radius: 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .bubble-me {
+      background: var(--primary);
+      color: #fff;
+    }
+    .bubble-you {
+      background: var(--accent);
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">左：原配色 &nbsp;|&nbsp; 右：方案 A &nbsp; &nbsp; 拖动窗口对比</div>
+
+<!-- ====== 场景1: Hero ====== -->
+<div class="compare-row">
+  <div class="scene orig hero">
+    <div class="scene-label">场景1 · Hero 区域</div>
+    <div class="hero-badge">🔥 限时活动</div>
+    <h1>AI 创作者之夜<br>人与AI共创的分享会</h1>
+    <p>一场关于创作、技术与未来的深度对话。不二和朋友们等你来。</p>
+    <a class="hero-cta">立即报名 →</a>
+  </div>
+  <div class="scene scheme-a hero">
+    <div class="scene-label">场景1 · Hero 区域</div>
+    <div class="hero-badge">🔥 限时活动</div>
+    <h1>AI 创作者之夜<br>人与AI共创的分享会</h1>
+    <p>一场关于创作、技术与未来的深度对话。不二和朋友们等你来。</p>
+    <a class="hero-cta">立即报名 →</a>
+  </div>
+</div>
+
+<!-- ====== 场景2: 文章列表 ====== -->
+<div class="compare-row">
+  <div class="scene orig article-list">
+    <div class="scene-label">场景2 · 文章列表</div>
+    <div class="article-item">
+      <span class="article-tag">设计</span>
+      <span class="article-tag">思考</span>
+      <h3><a>设计系统的本质：约束即自由</a></h3>
+      <div class="article-meta">2026.06.18 · 阅读 8 min</div>
+      <p class="article-desc">当我们谈论设计系统时，我们真正在谈论的是如何用一套有限的规则，创造出无限的可能性。</p>
+    </div>
+    <div class="article-item">
+      <span class="article-tag">AI</span>
+      <h3><a>和AI合作一年后，我的设计流程变了</a></h3>
+      <div class="article-meta">2026.06.10 · 阅读 12 min</div>
+      <p class="article-desc">工具在变，但好设计的标准没变。这篇文章记录了我在AI辅助下的设计实践。</p>
+    </div>
+    <div class="article-item">
+      <span class="article-tag">随笔</span>
+      <span class="article-tag">生活</span>
+      <h3><a>为什么我坚持用暖色做背景</a></h3>
+      <div class="article-meta">2026.06.02 · 阅读 5 min</div>
+      <p class="article-desc">冷色调给人的是距离感，暖色给人的是温度。一个设计师的色彩执念。</p>
+    </div>
+  </div>
+  <div class="scene scheme-a article-list">
+    <div class="scene-label">场景2 · 文章列表</div>
+    <div class="article-item">
+      <span class="article-tag">设计</span>
+      <span class="article-tag">思考</span>
+      <h3><a>设计系统的本质：约束即自由</a></h3>
+      <div class="article-meta">2026.06.18 · 阅读 8 min</div>
+      <p class="article-desc">当我们谈论设计系统时，我们真正在谈论的是如何用一套有限的规则，创造出无限的可能性。</p>
+    </div>
+    <div class="article-item">
+      <span class="article-tag">AI</span>
+      <h3><a>和AI合作一年后，我的设计流程变了</a></h3>
+      <div class="article-meta">2026.06.10 · 阅读 12 min</div>
+      <p class="article-desc">工具在变，但好设计的标准没变。这篇文章记录了我在AI辅助下的设计实践。</p>
+    </div>
+    <div class="article-item">
+      <span class="article-tag">随笔</span>
+      <span class="article-tag">生活</span>
+      <h3><a>为什么我坚持用暖色做背景</a></h3>
+      <div class="article-meta">2026.06.02 · 阅读 5 min</div>
+      <p class="article-desc">冷色调给人的是距离感，暖色给人的是温度。一个设计师的色彩执念。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 场景3: 卡片网格 ====== -->
+<div class="compare-row">
+  <div class="scene orig card-grid">
+    <div class="scene-label">场景3 · 功能卡片网格</div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon" style="background:var(--primary);color:#fff;">✏️</div>
+        <h4>设计系统</h4>
+        <p>基于品牌DNA的<span class="highlight">完整组件库</span>，开箱即用的设计资产。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--accent);color:var(--text);">🎨</div>
+        <h4>场景化模板</h4>
+        <p>覆盖Landing、Blog、Portfolio等<span class="highlight">常见场景</span>。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--pop);color:#fff;">⚡</div>
+        <h4>AI 驱动</h4>
+        <p>与Claude深度集成，用自然语言<span class="highlight">生成页面</span>。</p>
+      </div>
+    </div>
+  </div>
+  <div class="scene scheme-a card-grid">
+    <div class="scene-label">场景3 · 功能卡片网格</div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon" style="background:var(--primary);color:#fff;">✏️</div>
+        <h4>设计系统</h4>
+        <p>基于品牌DNA的<span class="highlight">完整组件库</span>，开箱即用的设计资产。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--accent);color:#fff;">🎨</div>
+        <h4>场景化模板</h4>
+        <p>覆盖Landing、Blog、Portfolio等<span class="highlight">常见场景</span>。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--pop);color:#fff;">⚡</div>
+        <h4>AI 驱动</h4>
+        <p>与Claude深度集成，用自然语言<span class="highlight">生成页面</span>。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 场景4: 个人介绍 ====== -->
+<div class="compare-row">
+  <div class="scene orig profile-section">
+    <div class="scene-label">场景4 · 个人介绍卡片</div>
+    <div class="profile-card">
+      <div class="profile-avatar">🧑‍🎨</div>
+      <div class="profile-info">
+        <h4>不二</h4>
+        <div class="role">设计师 · 创作者 · AI 实践者</div>
+        <p class="bio">相信好设计有温度。用 <a class="profile-link">设计系统</a> 和 <a class="profile-link">AI工具</a> 探索创作的边界。</p>
+      </div>
+    </div>
+  </div>
+  <div class="scene scheme-a profile-section">
+    <div class="scene-label">场景4 · 个人介绍卡片</div>
+    <div class="profile-card">
+      <div class="profile-avatar">🧑‍🎨</div>
+      <div class="profile-info">
+        <h4>不二</h4>
+        <div class="role">设计师 · 创作者 · AI 实践者</div>
+        <p class="bio">相信好设计有温度。用 <a class="profile-link">设计系统</a> 和 <a class="profile-link">AI工具</a> 探索创作的边界。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 场景5: Footer ====== -->
+<div class="compare-row">
+  <div class="scene orig" style="background:var(--text);padding:2rem;">
+    <div class="scene-label" style="color:#888;">场景5 · 页脚</div>
+    <div class="footer-grid">
+      <div>
+        <h4>不二的设计空间</h4>
+        <p style="font-size:0.8rem;color:#999;">一个设计师的创作笔记与设计系统。</p>
+        <div class="newsletter-box" style="background:#2a2a3e;">
+          <input placeholder="你的邮箱" style="background:#1a1a2e;color:#ccc;border-color:#444;">
+          <button>订阅 →</button>
+        </div>
+      </div>
+      <div>
+        <h4>导航</h4>
+        <a>文章</a><a>项目</a><a>关于</a><a>设计系统</a>
+      </div>
+      <div>
+        <h4>联系</h4>
+        <a>Twitter</a><a>GitHub</a><a>邮箱</a><a>RSS</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 不二</span>
+      <span>用 <a>爱</a> 和 <a>AI</a> 构建</span>
+    </div>
+  </div>
+  <div class="scene scheme-a" style="background:var(--text);padding:2rem;">
+    <div class="scene-label" style="color:#888;">场景5 · 页脚</div>
+    <div class="footer-grid">
+      <div>
+        <h4>不二的设计空间</h4>
+        <p style="font-size:0.8rem;color:#999;">一个设计师的创作笔记与设计系统。</p>
+        <div class="newsletter-box" style="background:#2a2a3e;">
+          <input placeholder="你的邮箱" style="background:#1a1a2e;color:#ccc;border-color:#444;">
+          <button>订阅 →</button>
+        </div>
+      </div>
+      <div>
+        <h4>导航</h4>
+        <a>文章</a><a>项目</a><a>关于</a><a>设计系统</a>
+      </div>
+      <div>
+        <h4>联系</h4>
+        <a>Twitter</a><a>GitHub</a><a>邮箱</a><a>RSS</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 不二</span>
+      <span>用 <a>爱</a> 和 <a>AI</a> 构建</span>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 场景6: 引用/对话 ====== -->
+<div class="compare-row">
+  <div class="scene orig testimonial-section">
+    <div class="scene-label">场景6 · 引用块 & 对话气泡</div>
+    <div class="testimonial">
+      <blockquote>
+        "设计不是装饰，是解决问题的方式。每一像素都要有存在的理由。好设计让人感觉不到设计的存在。"
+      </blockquote>
+      <div class="bubble-row">
+        <span class="bubble bubble-me">不二：这个配色怎么样？</span>
+        <span class="bubble bubble-you">你说：我喜欢暖色调</span>
+        <span class="bubble bubble-me">不二：那就定暖色系了！</span>
+      </div>
+    </div>
+  </div>
+  <div class="scene scheme-a testimonial-section">
+    <div class="scene-label">场景6 · 引用块 & 对话气泡</div>
+    <div class="testimonial">
+      <blockquote>
+        "设计不是装饰，是解决问题的方式。每一像素都要有存在的理由。好设计让人感觉不到设计的存在。"
+      </blockquote>
+      <div class="bubble-row">
+        <span class="bubble bubble-me">不二：这个配色怎么样？</span>
+        <span class="bubble bubble-you">你说：我喜欢暖色调</span>
+        <span class="bubble bubble-me">不二：那就定暖色系了！</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

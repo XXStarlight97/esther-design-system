@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三套配色 × 小红书图文卡片对比</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700;900&family=Fraunces:ital,wght@1,400;1,700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #d5d0c8;
+  font-family: 'Noto Sans SC', sans-serif;
+  padding: 20px;
+}
+
+/* ========== 顶部标题栏 ========== */
+.top-bar {
+  text-align: center;
+  padding: 16px 0 20px;
+  color: #1A1A2E;
+}
+.top-bar h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 28px;
+  margin-bottom: 4px;
+}
+.top-bar .desc {
+  font-size: 14px;
+  color: #5a5a5a;
+}
+
+/* ========== 三列布局 ========== */
+.compare-grid {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.scheme-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.scheme-label {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 900;
+  font-size: 17px;
+  padding: 8px 28px;
+  border-radius: 8px;
+  letter-spacing: 1px;
+}
+
+/* ========== 卡片 = 1080×1440×0.26 ========== */
+.card {
+  width: 1080px;
+  height: 1440px;
+  position: relative;
+  overflow: hidden;
+  transform: scale(0.26);
+  transform-origin: top center;
+  border-radius: 4px;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.12);
+  flex-shrink: 0;
+}
+
+/* 折叠: 卡片真实高度 1440 * 0.26 = 374.4, 减去重叠 */
+.scheme-col .card { margin-bottom: -278px; }
+
+/* ========== P1 封面 ========== */
+.p-cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 90px;
+}
+.p-cover .deco-top {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 8px;
+}
+.p-cover .tag {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  display: inline-block;
+  padding: 8px 24px;
+  border-radius: 6px;
+  margin-bottom: 40px;
+  letter-spacing: 2px;
+}
+.p-cover h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 88px;
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+.p-cover h1 .highlight { }
+.p-cover .subtitle {
+  font-size: 42px;
+  font-weight: 500;
+  line-height: 1.6;
+  margin-bottom: 80px;
+}
+.p-cover .author-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: auto;
+}
+.p-cover .avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.p-cover .author-name {
+  font-size: 36px;
+  font-weight: 700;
+}
+.p-cover .author-desc {
+  font-size: 24px;
+  margin-top: 4px;
+}
+
+/* ========== P2 深色面板页 ========== */
+.p-dark {
+  display: flex;
+  flex-direction: column;
+  padding: 80px 80px;
+}
+.p-dark .page-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 120px;
+  opacity: 0.15;
+  position: absolute;
+  top: 40px;
+  right: 80px;
+  font-weight: 700;
+}
+.p-dark h2 {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 52px;
+  margin-bottom: 16px;
+}
+.p-dark .sub {
+  font-size: 32px;
+  margin-bottom: 60px;
+  font-weight: 500;
+}
+.p-dark .items {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 36px;
+}
+.p-dark .item {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+.p-dark .item .icon {
+  font-size: 40px;
+  flex-shrink: 0;
+  width: 56px;
+  text-align: center;
+}
+.p-dark .item .text {
+  font-size: 38px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+.p-dark .item .text strong { font-weight: 700; }
+.p-dark .deco-line {
+  position: absolute;
+  bottom: 80px;
+  left: 80px;
+  right: 80px;
+  height: 4px;
+  border-radius: 2px;
+  opacity: 0.6;
+}
+
+/* ========== P3 浅色列表页 ========== */
+.p-list {
+  display: flex;
+  flex-direction: column;
+  padding: 72px 80px;
+}
+.p-list .page-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 120px;
+  opacity: 0.12;
+  position: absolute;
+  top: 40px;
+  right: 80px;
+  font-weight: 700;
+}
+.p-list h2 {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 52px;
+  margin-bottom: 48px;
+}
+.p-list h2::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 6px;
+  margin-top: 16px;
+  border-radius: 3px;
+}
+.p-list .content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+}
+
+/* ========== 尾页 ========== */
+.p-end {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 90px;
+  text-align: center;
+}
+.p-end .deco-bottom {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 8px;
+}
+.p-end .quote-mark {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 200px;
+  opacity: 0.15;
+  line-height: 0.6;
+  margin-bottom: -20px;
+}
+.p-end .quote {
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 60px;
+  line-height: 1.5;
+  margin-bottom: 32px;
+  max-width: 900px;
+}
+.p-end .avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+.p-end .author-name {
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.p-end .cta {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 48px;
+}
+.p-end .tagline {
+  font-size: 26px;
+  letter-spacing: 2px;
+}
+
+/* ================================================
+   方案一：植物绿系
+   ================================================ */
+.s1 {
+  --pri: #15865C;
+  --acc: #ADC965;
+  --pop: #008A5B;
+  --bg: #F7F9F3;
+  --bg-card: #EFF3E6;
+  --ink: #1A1A2E;
+  --ink2: #4A4A5A;
+  --ink3: #8A8A9A;
+  --dark-bg: #151821;
+}
+.s1-label { background: #EFF3E6; color: #15865C; }
+
+/* P1 */
+.s1.p-cover { background: var(--bg); }
+.s1.p-cover .deco-top { background: linear-gradient(90deg, var(--pri) 60%, var(--acc) 80%, var(--pop) 100%); }
+.s1.p-cover .tag { background: var(--pri); }
+.s1.p-cover h1 { color: var(--ink); }
+.s1.p-cover h1 .highlight { color: var(--pri); }
+.s1.p-cover .subtitle { color: var(--ink2); }
+.s1.p-cover .avatar { border: 3px solid var(--acc); }
+.s1.p-cover .author-name { color: var(--ink); }
+.s1.p-cover .author-desc { color: var(--ink2); }
+
+/* P2 */
+.s1.p-dark { background: var(--dark-bg); }
+.s1.p-dark .page-num { color: var(--acc); }
+.s1.p-dark h2 { color: var(--bg); }
+.s1.p-dark .sub { color: var(--acc); }
+.s1.p-dark .item .text { color: #e8e4de; }
+.s1.p-dark .item .text strong { color: #fff; }
+.s1.p-dark .deco-line { background: linear-gradient(90deg, var(--pri) 50%, var(--acc) 75%, var(--pop) 100%); }
+
+/* P3 */
+.s1.p-list { background: var(--bg); }
+.s1.p-list .page-num { color: var(--pri); }
+.s1.p-list h2 { color: var(--ink); }
+.s1.p-list h2::after { background: var(--acc); }
+
+/* P4 */
+.s1.p-end { background: var(--bg); }
+.s1.p-end .deco-bottom { background: linear-gradient(90deg, var(--pri) 60%, var(--acc) 80%, var(--pop) 100%); }
+.s1.p-end .quote-mark { color: var(--pri); }
+.s1.p-end .quote { color: var(--ink); }
+.s1.p-end .quote .highlight { color: var(--pri); text-decoration-color: var(--acc); }
+.s1.p-end .avatar { border: 3px solid var(--acc); }
+.s1.p-end .author-name { color: var(--ink); }
+.s1.p-end .cta { color: var(--pri); }
+.s1.p-end .tagline { color: var(--ink2); }
+
+/* ================================================
+   方案二：暖奶油 + 钢蓝 + 珊瑚橙
+   ================================================ */
+.s2 {
+  --pri: #6d98ba;
+  --acc: #f59356;
+  --pop: #ff6366;
+  --aux: #8f8c3d;
+  --bg: #FCFAF5;
+  --bg-card: #F5EFE4;
+  --ink: #1A1A2E;
+  --ink2: #4A4A5A;
+  --ink3: #8A8A9A;
+  --dark-bg: #151821;
+}
+.s2-label { background: #F5EFE4; color: #6d98ba; }
+
+.s2.p-cover { background: var(--bg); }
+.s2.p-cover .deco-top { background: linear-gradient(90deg, var(--pri) 60%, var(--acc) 80%, var(--pop) 100%); }
+.s2.p-cover .tag { background: var(--pri); }
+.s2.p-cover h1 { color: var(--ink); }
+.s2.p-cover h1 .highlight { color: var(--pri); }
+.s2.p-cover .subtitle { color: var(--ink2); }
+.s2.p-cover .avatar { border: 3px solid var(--acc); }
+.s2.p-cover .author-name { color: var(--ink); }
+.s2.p-cover .author-desc { color: var(--ink2); }
+
+.s2.p-dark { background: var(--dark-bg); }
+.s2.p-dark .page-num { color: var(--acc); }
+.s2.p-dark h2 { color: var(--bg); }
+.s2.p-dark .sub { color: var(--acc); }
+.s2.p-dark .item .text { color: #e8e4de; }
+.s2.p-dark .item .text strong { color: #fff; }
+.s2.p-dark .deco-line { background: linear-gradient(90deg, var(--pri) 50%, var(--acc) 75%, var(--pop) 100%); }
+
+.s2.p-list { background: var(--bg); }
+.s2.p-list .page-num { color: var(--pri); }
+.s2.p-list h2 { color: var(--ink); }
+.s2.p-list h2::after { background: var(--acc); }
+
+.s2.p-end { background: var(--bg); }
+.s2.p-end .deco-bottom { background: linear-gradient(90deg, var(--pri) 60%, var(--acc) 80%, var(--pop) 100%); }
+.s2.p-end .quote-mark { color: var(--pri); }
+.s2.p-end .quote { color: var(--ink); }
+.s2.p-end .quote .highlight { color: var(--pri); text-decoration-color: var(--acc); }
+.s2.p-end .avatar { border: 3px solid var(--acc); }
+.s2.p-end .author-name { color: var(--ink); }
+.s2.p-end .cta { color: var(--pri); }
+.s2.p-end .tagline { color: var(--ink2); }
+
+/* ================================================
+   方案三：陶橙 + 暖灰 + 墨黑
+   ================================================ */
+.s3 {
+  --pri: #D75926;
+  --acc: #BDB8B6;
+  --pop: #1B1B18;
+  --aux: #AFA9A6;
+  --bg: #F7EFE9;
+  --bg-card: #E6DED8;
+  --ink: #1B1B18;
+  --ink2: #4A4A5A;
+  --ink3: #8A8A9A;
+  --dark-bg: #1B1B18;
+}
+.s3-label { background: #E6DED8; color: #D75926; }
+
+.s3.p-cover { background: var(--bg); }
+.s3.p-cover .deco-top { background: linear-gradient(90deg, var(--pri) 60%, var(--acc) 80%, var(--pop) 100%); }
+.s3.p-cover .tag { background: var(--pri); }
+.s3.p-cover h1 { color: var(--ink); }
+.s3.p-cover h1 .highlight { color: var(--pri); }
+.s3.p-cover .subtitle { color: var(--ink2); }
+.s3.p-cover .avatar { border: 3px solid var(--pri); }
+.s3.p-cover .author-name { color: var(--ink); }
+.s3.p-cover .author-desc { color: var(--ink2); }
+
+.s3.p-dark { background: var(--dark-bg); }
+.s3.p-dark .page-num { color: var(--pri); }
+.s3.p-dark h2 { color: var(--bg); }
+.s3.p-dark .sub { color: var(--pri); }
+.s3.p-dark .item .text { color: #e8e4de; }
+.s3.p-dark .item .text strong { color: #fff; }
+.s3.p-dark .deco-line { background: linear-gradient(90deg, var(--pri) 50%, var(--acc) 75%, var(--pop) 100%); }
+
+.s3.p-list { background: var(--bg); }
+.s3.p-list .page-num { color: var(--pri); }
+.s3.p-list h2 { color: var(--ink); }
+.s3.p-list h2::after { background: var(--pri); }
+
+.s3.p-end { background: var(--bg); }
+.s3.p-end .deco-bottom { background: linear-gradient(90deg, var(--pri) 60%, var(--acc) 80%, var(--pop) 100%); }
+.s3.p-end .quote-mark { color: var(--pri); }
+.s3.p-end .quote { color: var(--ink); }
+.s3.p-end .quote .highlight { color: var(--pri); text-decoration-color: var(--acc); }
+.s3.p-end .avatar { border: 3px solid var(--pri); }
+.s3.p-end .author-name { color: var(--ink); }
+.s3.p-end .cta { color: var(--pri); }
+.s3.p-end .tagline { color: var(--ink2); }
+
+/* ========== 通用列表项样式 ========== */
+.step-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 28px;
+  padding: 20px 0;
+}
+.step-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 72px;
+  font-weight: 700;
+  opacity: 0.18;
+  line-height: 0.8;
+  width: 90px;
+  flex-shrink: 0;
+  text-align: center;
+}
+.step-text { flex: 1; }
+.step-text h4 {
+  font-size: 38px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.step-text p {
+  font-size: 30px;
+  line-height: 1.5;
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>三套配色 × 小红书图文卡片</h1>
+  <p class="desc">每列四张卡片：封面 → 深色面板 → 浅色列表 → 尾页 &nbsp;|&nbsp; 1080×1440 真实尺寸</p>
+</div>
+
+<div class="compare-grid">
+
+<!-- ======================== 列1: 方案一 植物绿系 ======================== -->
+<div class="scheme-col">
+  <span class="scheme-label s1-label">🌿 方案一 · 植物绿系</span>
+
+  <!-- P1 封面 -->
+  <div class="card s1 p-cover">
+    <div class="deco-top"></div>
+    <span class="tag">设计系统</span>
+    <h1>设计师的<br><span class="highlight">配色心法</span></h1>
+    <p class="subtitle">三个颜色搞定一套品牌视觉<br>让你的页面一眼认出是谁的作品</p>
+    <div class="author-row">
+      <img class="avatar" src="assets/avatar.jpg" alt="avatar">
+      <div>
+        <div class="author-name">Esther不二</div>
+        <div class="author-desc">AI时代的个人品牌实验</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P2 深色面板 -->
+  <div class="card s1 p-dark">
+    <span class="page-num">02</span>
+    <h2>为什么只有三个颜色？</h2>
+    <p class="sub">少即是多，约束即自由</p>
+    <div class="items">
+      <div class="item">
+        <span class="icon">🎯</span>
+        <span class="text"><strong>主色 60%</strong> — 标题、链接、品牌识别</span>
+      </div>
+      <div class="item">
+        <span class="icon">✨</span>
+        <span class="text"><strong>强调 30%</strong> — 装饰、标签、视觉节奏</span>
+      </div>
+      <div class="item">
+        <span class="icon">⚡</span>
+        <span class="text"><strong>点缀 10%</strong> — CTA、高亮，点到为止</span>
+      </div>
+    </div>
+    <div class="deco-line"></div>
+  </div>
+
+  <!-- P3 浅色列表 -->
+  <div class="card s1 p-list">
+    <span class="page-num">03</span>
+    <h2>配色避坑指南</h2>
+    <div class="content-area">
+      <div class="step-row">
+        <span class="step-num">1</span>
+        <div class="step-text">
+          <h4>不用纯黑与纯白</h4>
+          <p>文字用墨色替代纯黑，背景永远偏暖，拒绝冷冰冰的对比。</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <span class="step-num">2</span>
+        <div class="step-text">
+          <h4>不用蓝紫渐变与neon</h4>
+          <p>AI味配色要全部避开。自然色系才有温度和辨识度。</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <span class="step-num">3</span>
+        <div class="step-text">
+          <h4>不让AI替你选色</h4>
+          <p>克制地使用三个固定色，每个颜色都有明确的角色与比例。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 尾页 -->
+  <div class="card s1 p-end">
+    <div class="deco-bottom"></div>
+    <div class="quote-mark">"</div>
+    <p class="quote">好设计让人<br><span class="highlight">感觉不到</span><br>设计的存在</p>
+    <img class="avatar" src="assets/avatar.jpg" alt="avatar">
+    <p class="author-name">Esther不二</p>
+    <p class="cta">关注 Esther不二</p>
+    <p class="tagline">AI时代的个人品牌实验 | 用AI让生活变好</p>
+  </div>
+</div>
+
+<!-- ======================== 列2: 方案二 暖奶油+钢蓝+珊瑚橙 ======================== -->
+<div class="scheme-col">
+  <span class="scheme-label s2-label">🧡 方案二 · 暖奶油珊瑚</span>
+
+  <!-- P1 封面 -->
+  <div class="card s2 p-cover">
+    <div class="deco-top"></div>
+    <span class="tag">设计系统</span>
+    <h1>设计师的<br><span class="highlight">配色心法</span></h1>
+    <p class="subtitle">三个颜色搞定一套品牌视觉<br>让你的页面一眼认出是谁的作品</p>
+    <div class="author-row">
+      <img class="avatar" src="assets/avatar.jpg" alt="avatar">
+      <div>
+        <div class="author-name">Esther不二</div>
+        <div class="author-desc">AI时代的个人品牌实验</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P2 深色面板 -->
+  <div class="card s2 p-dark">
+    <span class="page-num">02</span>
+    <h2>为什么只有三个颜色？</h2>
+    <p class="sub">少即是多，约束即自由</p>
+    <div class="items">
+      <div class="item">
+        <span class="icon">🎯</span>
+        <span class="text"><strong>主色 60%</strong> — 标题、链接、品牌识别</span>
+      </div>
+      <div class="item">
+        <span class="icon">✨</span>
+        <span class="text"><strong>强调 30%</strong> — 装饰、标签、视觉节奏</span>
+      </div>
+      <div class="item">
+        <span class="icon">⚡</span>
+        <span class="text"><strong>点缀 10%</strong> — CTA、高亮，点到为止</span>
+      </div>
+    </div>
+    <div class="deco-line"></div>
+  </div>
+
+  <!-- P3 浅色列表 -->
+  <div class="card s2 p-list">
+    <span class="page-num">03</span>
+    <h2>配色避坑指南</h2>
+    <div class="content-area">
+      <div class="step-row">
+        <span class="step-num">1</span>
+        <div class="step-text">
+          <h4>不用纯黑与纯白</h4>
+          <p>文字用墨色替代纯黑，背景永远偏暖，拒绝冷冰冰的对比。</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <span class="step-num">2</span>
+        <div class="step-text">
+          <h4>不用蓝紫渐变与neon</h4>
+          <p>AI味配色要全部避开。自然色系才有温度和辨识度。</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <span class="step-num">3</span>
+        <div class="step-text">
+          <h4>不让AI替你选色</h4>
+          <p>克制地使用三个固定色，每个颜色都有明确的角色与比例。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 尾页 -->
+  <div class="card s2 p-end">
+    <div class="deco-bottom"></div>
+    <div class="quote-mark">"</div>
+    <p class="quote">好设计让人<br><span class="highlight">感觉不到</span><br>设计的存在</p>
+    <img class="avatar" src="assets/avatar.jpg" alt="avatar">
+    <p class="author-name">Esther不二</p>
+    <p class="cta">关注 Esther不二</p>
+    <p class="tagline">AI时代的个人品牌实验 | 用AI让生活变好</p>
+  </div>
+</div>
+
+<!-- ======================== 列3: 方案三 陶橙+暖灰+墨黑 ======================== -->
+<div class="scheme-col">
+  <span class="scheme-label s3-label">🏺 方案三 · 陶橙暖灰</span>
+
+  <!-- P1 封面 -->
+  <div class="card s3 p-cover">
+    <div class="deco-top"></div>
+    <span class="tag">设计系统</span>
+    <h1>设计师的<br><span class="highlight">配色心法</span></h1>
+    <p class="subtitle">三个颜色搞定一套品牌视觉<br>让你的页面一眼认出是谁的作品</p>
+    <div class="author-row">
+      <img class="avatar" src="assets/avatar.jpg" alt="avatar">
+      <div>
+        <div class="author-name">Esther不二</div>
+        <div class="author-desc">AI时代的个人品牌实验</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P2 深色面板 -->
+  <div class="card s3 p-dark">
+    <span class="page-num">02</span>
+    <h2>为什么只有三个颜色？</h2>
+    <p class="sub">少即是多，约束即自由</p>
+    <div class="items">
+      <div class="item">
+        <span class="icon">🎯</span>
+        <span class="text"><strong>主色 60%</strong> — 标题、链接、品牌识别</span>
+      </div>
+      <div class="item">
+        <span class="icon">✨</span>
+        <span class="text"><strong>强调 30%</strong> — 装饰、标签、视觉节奏</span>
+      </div>
+      <div class="item">
+        <span class="icon">⚡</span>
+        <span class="text"><strong>点缀 10%</strong> — CTA、高亮，点到为止</span>
+      </div>
+    </div>
+    <div class="deco-line"></div>
+  </div>
+
+  <!-- P3 浅色列表 -->
+  <div class="card s3 p-list">
+    <span class="page-num">03</span>
+    <h2>配色避坑指南</h2>
+    <div class="content-area">
+      <div class="step-row">
+        <span class="step-num">1</span>
+        <div class="step-text">
+          <h4>不用纯黑与纯白</h4>
+          <p>文字用墨色替代纯黑，背景永远偏暖，拒绝冷冰冰的对比。</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <span class="step-num">2</span>
+        <div class="step-text">
+          <h4>不用蓝紫渐变与neon</h4>
+          <p>AI味配色要全部避开。自然色系才有温度和辨识度。</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <span class="step-num">3</span>
+        <div class="step-text">
+          <h4>不让AI替你选色</h4>
+          <p>克制地使用三个固定色，每个颜色都有明确的角色与比例。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 尾页 -->
+  <div class="card s3 p-end">
+    <div class="deco-bottom"></div>
+    <div class="quote-mark">"</div>
+    <p class="quote">好设计让人<br><span class="highlight">感觉不到</span><br>设计的存在</p>
+    <img class="avatar" src="assets/avatar.jpg" alt="avatar">
+    <p class="author-name">Esther不二</p>
+    <p class="cta">关注 Esther不二</p>
+    <p class="tagline">AI时代的个人品牌实验 | 用AI让生活变好</p>
+  </div>
+</div>
+
+</div><!-- compare-grid -->
+
+</body>
+</html>

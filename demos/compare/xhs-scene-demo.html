@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小红书图文场景对比</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Serif SC', 'PingFang SC', 'Source Han Serif SC', 'Hiragino Mincho ProN', 'Songti SC', serif;
+      background: #eee;
+      padding: 2rem;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 1.3rem;
+      margin: 3rem 0 1.5rem;
+      font-weight: 900;
+    }
+
+    h2:first-child { margin-top: 0.5rem; }
+
+    .xhs-row {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    /* 3:4 卡片 */
+    .xhs-card {
+      width: 285px;
+      aspect-ratio: 3 / 4;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0,0,0,.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ========== 封面页 ========== */
+    .xhs-cover {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2.5rem 1.8rem;
+    }
+
+    .xhs-cover .deco-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+    }
+
+    .xhs-cover .deco-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+    }
+
+    .xhs-cover .tag-line {
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: 3px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin-bottom: 1rem;
+    }
+
+    .xhs-cover h1 {
+      font-size: 1.5rem;
+      font-weight: 900;
+      line-height: 1.4;
+      margin-bottom: 0.6rem;
+    }
+
+    .xhs-cover .subtitle {
+      font-size: 0.78rem;
+      line-height: 1.6;
+      opacity: 0.65;
+    }
+
+    .xhs-cover .deco-bottom {
+      position: absolute;
+      bottom: 24px;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      opacity: 0.35;
+    }
+
+    /* ========== 内容页 ========== */
+    .xhs-content {
+      padding: 2rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .xhs-content .section-num {
+      font-size: 3rem;
+      font-weight: 900;
+      opacity: 0.08;
+      line-height: 1;
+      margin-bottom: -1rem;
+      margin-left: -0.2rem;
+    }
+
+    .xhs-content h3 {
+      font-size: 1.15rem;
+      font-weight: 900;
+      margin-bottom: 0.8rem;
+      line-height: 1.4;
+    }
+
+    .xhs-content p {
+      font-size: 0.78rem;
+      line-height: 1.9;
+      opacity: 0.7;
+      margin-bottom: 1.2rem;
+    }
+
+    .xhs-content .highlight-box {
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .xhs-content .bullet {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+      font-size: 0.76rem;
+      line-height: 1.6;
+    }
+
+    .xhs-content .bullet-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-top: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .xhs-content .deco-line {
+      height: 3px;
+      border-radius: 2px;
+      width: 40px;
+      margin: 1rem 0;
+    }
+
+    /* ========== 引用页 ========== */
+    .xhs-quote-page {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2.5rem 2rem;
+    }
+
+    .xhs-quote-page .big-quote {
+      font-size: 3.5rem;
+      line-height: 1;
+      opacity: 0.12;
+      margin-bottom: -2rem;
+      font-family: Georgia, serif;
+    }
+
+    .xhs-quote-page .quote-text {
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .xhs-quote-page .quote-author {
+      font-size: 0.75rem;
+      opacity: 0.5;
+    }
+
+    .xhs-quote-page .quote-deco {
+      width: 50px;
+      height: 3px;
+      border-radius: 2px;
+      margin: 1rem 0;
+    }
+
+    /* ========== 三套配色变量 ========== */
+    /* 原版 */
+    .orig-xhs {
+      --c-bg: #fefcf6;
+      --c-card: #faf6eb;
+      --c-primary: #2B7FD8;
+      --c-accent: #F4D758;
+      --c-pop: #E84A5F;
+      --c-text: #1A1A2E;
+      --c-text2: #4A4A5A;
+      --c-border: #e8e8e0;
+    }
+
+    /* 绿色系 */
+    .green-xhs {
+      --c-bg: #F7F9F3;
+      --c-card: #EFF3E6;
+      --c-primary: #15865C;
+      --c-accent: #ADC965;
+      --c-pop: #008A5B;
+      --c-text: #1A1A2E;
+      --c-text2: #4A4A5A;
+      --c-border: #dce4d2;
+    }
+
+    /* 暖色系 (方案A) */
+    .warm-xhs {
+      --c-bg: #FCFAF5;
+      --c-card: #F5EFE4;
+      --c-primary: #6d98ba;
+      --c-accent: #f59356;
+      --c-pop: #ff6366;
+      --c-text: #1A1A2E;
+      --c-text2: #4A4A5A;
+      --c-border: #ece8dc;
+    }
+
+    .xhs-card {
+      background: var(--c-bg);
+      color: var(--c-text);
+    }
+    .xhs-cover .deco-top { background: var(--c-primary); }
+    .xhs-cover .deco-circle { background: var(--c-accent); color: var(--c-text); }
+    .xhs-cover .tag-line { background: var(--c-accent); color: var(--c-text); }
+    .xhs-cover h1 { color: var(--c-primary); }
+    .xhs-cover .subtitle { color: var(--c-text2); }
+
+    .xhs-content .highlight-box { background: var(--c-card); color: var(--c-text2); }
+    .xhs-content h3 { color: var(--c-primary); }
+    .xhs-content .bullet-dot { background: var(--c-accent); }
+    .xhs-content .deco-line { background: var(--c-accent); }
+    .xhs-content p { color: var(--c-text2); }
+
+    .xhs-quote-page .quote-text { color: var(--c-text); }
+    .xhs-quote-page .quote-deco { background: var(--c-pop); }
+    .xhs-card .accent-pop { color: var(--c-pop); }
+
+    /* 每个卡片的小装饰点缀 */
+    .pill-accent {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      background: var(--c-pop);
+      color: #fff;
+    }
+
+    /* CTA strip at bottom of content */
+    .cta-strip {
+      margin-top: auto;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--c-pop);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<h2>📱 小红书图文 — 封面页对比</h2>
+<div class="xhs-row">
+
+  <!-- 原版封面 -->
+  <div class="xhs-card orig-xhs">
+    <div class="xhs-cover">
+      <div class="deco-top"></div>
+      <div class="deco-circle">🎨</div>
+      <div class="tag-line">设计系统</div>
+      <h1>设计师的<br>配色心法</h1>
+      <p class="subtitle">三个颜色搞定一套品牌视觉，让你的页面一眼认出是谁的作品</p>
+    </div>
+  </div>
+
+  <!-- 绿色封面 -->
+  <div class="xhs-card green-xhs">
+    <div class="xhs-cover">
+      <div class="deco-top"></div>
+      <div class="deco-circle">🌿</div>
+      <div class="tag-line">设计系统</div>
+      <h1>设计师的<br>配色心法</h1>
+      <p class="subtitle">三个颜色搞定一套品牌视觉，让你的页面一眼认出是谁的作品</p>
+    </div>
+  </div>
+
+  <!-- 暖色封面 -->
+  <div class="xhs-card warm-xhs">
+    <div class="xhs-cover">
+      <div class="deco-top"></div>
+      <div class="deco-circle">🧡</div>
+      <div class="tag-line">设计系统</div>
+      <h1>设计师的<br>配色心法</h1>
+      <p class="subtitle">三个颜色搞定一套品牌视觉，让你的页面一眼认出是谁的作品</p>
+    </div>
+  </div>
+</div>
+
+<h2>📝 小红书图文 — 内容页对比</h2>
+<div class="xhs-row">
+
+  <!-- 原版内容 -->
+  <div class="xhs-card orig-xhs">
+    <div class="xhs-content">
+      <div class="section-num">01</div>
+      <h3>为什么只有三个颜色？</h3>
+      <p>限制是创造力的催化剂。三个固定颜色+背景足够了——少即是多，约束即自由。</p>
+      <div class="highlight-box">
+        色不过三，多则乱。每个颜色都有明确角色：主色、强调、点缀。
+      </div>
+      <div class="bullet"><span class="bullet-dot"></span>主色 60% — 标题、链接、品牌识别</div>
+      <div class="bullet"><span class="bullet-dot"></span>强调 30% — 装饰、标签、视觉节奏</div>
+      <div class="bullet"><span class="bullet-dot"></span>点缀 10% — CTA、高亮，点到为止</div>
+      <div class="deco-line"></div>
+    </div>
+  </div>
+
+  <!-- 绿色内容 -->
+  <div class="xhs-card green-xhs">
+    <div class="xhs-content">
+      <div class="section-num">01</div>
+      <h3>为什么只有三个颜色？</h3>
+      <p>限制是创造力的催化剂。三个固定颜色+背景足够了——少即是多，约束即自由。</p>
+      <div class="highlight-box">
+        色不过三，多则乱。每个颜色都有明确角色：主色、强调、点缀。
+      </div>
+      <div class="bullet"><span class="bullet-dot"></span>主色 60% — 标题、链接、品牌识别</div>
+      <div class="bullet"><span class="bullet-dot"></span>强调 30% — 装饰、标签、视觉节奏</div>
+      <div class="bullet"><span class="bullet-dot"></span>点缀 10% — CTA、高亮，点到为止</div>
+      <div class="deco-line"></div>
+    </div>
+  </div>
+
+  <!-- 暖色内容 -->
+  <div class="xhs-card warm-xhs">
+    <div class="xhs-content">
+      <div class="section-num">01</div>
+      <h3>为什么只有三个颜色？</h3>
+      <p>限制是创造力的催化剂。三个固定颜色+背景足够了——少即是多，约束即自由。</p>
+      <div class="highlight-box">
+        色不过三，多则乱。每个颜色都有明确角色：主色、强调、点缀。
+      </div>
+      <div class="bullet"><span class="bullet-dot"></span>主色 60% — 标题、链接、品牌识别</div>
+      <div class="bullet"><span class="bullet-dot"></span>强调 30% — 装饰、标签、视觉节奏</div>
+      <div class="bullet"><span class="bullet-dot"></span>点缀 10% — CTA、高亮，点到为止</div>
+      <div class="deco-line"></div>
+    </div>
+  </div>
+</div>
+
+<h2>💬 小红书图文 — 金句页对比</h2>
+<div class="xhs-row">
+
+  <!-- 原版金句 -->
+  <div class="xhs-card orig-xhs">
+    <div class="xhs-quote-page">
+      <div class="big-quote">"</div>
+      <p class="quote-text">好设计让人<br>感觉不到<br>设计的存在</p>
+      <div class="quote-deco"></div>
+      <p class="quote-author">— 不二的设计哲学</p>
+    </div>
+  </div>
+
+  <!-- 绿色金句 -->
+  <div class="xhs-card green-xhs">
+    <div class="xhs-quote-page">
+      <div class="big-quote">"</div>
+      <p class="quote-text">好设计让人<br>感觉不到<br>设计的存在</p>
+      <div class="quote-deco"></div>
+      <p class="quote-author">— 不二的设计哲学</p>
+    </div>
+  </div>
+
+  <!-- 暖色金句 -->
+  <div class="xhs-card warm-xhs">
+    <div class="xhs-quote-page">
+      <div class="big-quote">"</div>
+      <p class="quote-text">好设计让人<br>感觉不到<br>设计的存在</p>
+      <div class="quote-deco"></div>
+      <p class="quote-author">— 不二的设计哲学</p>
+    </div>
+  </div>
+</div>
+
+<h2>🏷️ 小红书图文 — 清单/攻略页对比</h2>
+<div class="xhs-row">
+
+  <!-- 原版清单 -->
+  <div class="xhs-card orig-xhs">
+    <div class="xhs-content">
+      <div class="section-num">04</div>
+      <h3>配色避坑指南</h3>
+      <div class="highlight-box" style="margin-bottom:0.8rem;">
+        ⚠️ 以下雷区请绕行
+      </div>
+      <div class="bullet"><span class="bullet-dot"></span>不用纯黑 <span class="accent-pop">#000</span> 或纯白</div>
+      <div class="bullet"><span class="bullet-dot"></span>不用蓝紫渐变、neon色</div>
+      <div class="bullet"><span class="bullet-dot"></span>不让AI替你选默认配色</div>
+      <div class="bullet"><span class="bullet-dot"></span>不把所有元素居中排列</div>
+      <div class="deco-line"></div>
+      <div class="cta-strip">保存这张图，下次设计前看一眼 →</div>
+    </div>
+  </div>
+
+  <!-- 绿色清单 -->
+  <div class="xhs-card green-xhs">
+    <div class="xhs-content">
+      <div class="section-num">04</div>
+      <h3>配色避坑指南</h3>
+      <div class="highlight-box" style="margin-bottom:0.8rem;">
+        ⚠️ 以下雷区请绕行
+      </div>
+      <div class="bullet"><span class="bullet-dot"></span>不用纯黑 <span class="accent-pop">#000</span> 或纯白</div>
+      <div class="bullet"><span class="bullet-dot"></span>不用蓝紫渐变、neon色</div>
+      <div class="bullet"><span class="bullet-dot"></span>不让AI替你选默认配色</div>
+      <div class="bullet"><span class="bullet-dot"></span>不把所有元素居中排列</div>
+      <div class="deco-line"></div>
+      <div class="cta-strip">保存这张图，下次设计前看一眼 →</div>
+    </div>
+  </div>
+
+  <!-- 暖色清单 -->
+  <div class="xhs-card warm-xhs">
+    <div class="xhs-content">
+      <div class="section-num">04</div>
+      <h3>配色避坑指南</h3>
+      <div class="highlight-box" style="margin-bottom:0.8rem;">
+        ⚠️ 以下雷区请绕行
+      </div>
+      <div class="bullet"><span class="bullet-dot"></span>不用纯黑 <span class="accent-pop">#000</span> 或纯白</div>
+      <div class="bullet"><span class="bullet-dot"></span>不用蓝紫渐变、neon色</div>
+      <div class="bullet"><span class="bullet-dot"></span>不让AI替你选默认配色</div>
+      <div class="bullet"><span class="bullet-dot"></span>不把所有元素居中排列</div>
+      <div class="deco-line"></div>
+      <div class="cta-strip">保存这张图，下次设计前看一眼 →</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

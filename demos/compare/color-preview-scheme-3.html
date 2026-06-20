@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>配色方案三对比预览</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1A1A2E;
+      --ink-soft: #4A4A5A;
+      --paper: #fefcf6;
+      --paper-deep: #faf6eb;
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 0%, rgba(215, 89, 38, 0.11), transparent 32rem),
+        linear-gradient(180deg, #fefcf6 0%, #f6efe7 100%);
+      font-family: "Noto Sans SC", -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
+      line-height: 1.7;
+      padding: clamp(24px, 4vw, 56px);
+    }
+
+    .page-shell {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(320px, 0.48fr);
+      gap: clamp(32px, 5vw, 72px);
+      align-items: end;
+      margin-bottom: clamp(40px, 6vw, 86px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: #D75926;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 52px;
+      height: 8px;
+      background: #D75926;
+      border-radius: 999px;
+    }
+
+    h1 {
+      max-width: 900px;
+      font-family: "Fraunces", "Noto Serif SC", serif;
+      font-size: clamp(3rem, 8vw, 7.2rem);
+      line-height: 0.95;
+      letter-spacing: 0;
+      font-weight: 900;
+    }
+
+    .hero p {
+      max-width: 460px;
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+    }
+
+    .note-card {
+      position: relative;
+      padding: 24px;
+      background: #1B1B18;
+      color: #F7EFE9;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .note-card::after {
+      content: "03";
+      position: absolute;
+      right: -8px;
+      bottom: -32px;
+      color: rgba(247, 239, 233, 0.12);
+      font-family: "Fraunces", serif;
+      font-size: 7rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .note-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #D75926;
+      font-family: "Noto Serif SC", serif;
+      font-size: 1.05rem;
+    }
+
+    .section-title {
+      margin: clamp(52px, 8vw, 100px) 0 22px;
+      font-family: "Noto Serif SC", serif;
+      font-size: clamp(1.55rem, 3vw, 2.35rem);
+      line-height: 1.18;
+    }
+
+    .scheme-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(18px, 2vw, 28px);
+    }
+
+    .scheme {
+      --main: #15865C;
+      --accent: #ADC965;
+      --pop: #008A5B;
+      --support: #8AA85B;
+      --bg: #F7F9F3;
+      --panel: #EFF3E6;
+      --text: #1A1A2E;
+      --muted: #4A4A5A;
+      background: var(--bg);
+      border: 1px solid rgba(26, 26, 46, 0.12);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(31, 25, 16, 0.08);
+    }
+
+    .scheme.two {
+      --main: #6d98ba;
+      --accent: #f59356;
+      --pop: #ff6366;
+      --support: #8f8c3d;
+      --bg: #FCFAF5;
+      --panel: #F5EFE4;
+      --text: #1A1A2E;
+      --muted: #4A4A5A;
+    }
+
+    .scheme.three {
+      --main: #D75926;
+      --accent: #BDB8B6;
+      --pop: #1B1B18;
+      --support: #AFA9A6;
+      --bg: #F7EFE9;
+      --panel: #E6DED8;
+      --text: #1B1B18;
+      --muted: #5F5855;
+    }
+
+    .scheme-header {
+      padding: 18px 18px 14px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .scheme-kicker {
+      color: var(--main);
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .scheme-name {
+      color: var(--text);
+      font-family: "Noto Serif SC", serif;
+      font-size: clamp(1.25rem, 2vw, 1.75rem);
+      line-height: 1.12;
+      font-weight: 900;
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      height: 50px;
+      border-top: 1px solid rgba(26, 26, 46, 0.08);
+      border-bottom: 1px solid rgba(26, 26, 46, 0.08);
+    }
+
+    .swatch.main { background: var(--main); }
+    .swatch.accent { background: var(--accent); }
+    .swatch.pop { background: var(--pop); }
+    .swatch.support { background: var(--support); }
+    .swatch.bg { background: var(--bg); }
+    .swatch.panel { background: var(--panel); }
+
+    .poster {
+      min-height: 520px;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      background: var(--bg);
+    }
+
+    .poster-stage {
+      position: relative;
+      min-height: 350px;
+      padding: 22px;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, var(--main) 0 55%, var(--accent) 55% 100%);
+    }
+
+    .scheme.one .poster-stage {
+      background:
+        radial-gradient(circle at 28% 25%, rgba(173, 201, 101, 0.72) 0 17%, transparent 18%),
+        linear-gradient(115deg, var(--bg) 0 48%, var(--main) 48% 100%);
+    }
+
+    .scheme.two .poster-stage {
+      background:
+        linear-gradient(135deg, rgba(109, 152, 186, 0.16) 0 38%, transparent 38%),
+        linear-gradient(90deg, var(--bg) 0 52%, var(--panel) 52% 100%);
+    }
+
+    .scheme.three .poster-stage {
+      background: linear-gradient(90deg, var(--main) 0 55%, var(--accent) 55% 100%);
+    }
+
+    .wavy-mark {
+      position: absolute;
+      inset: -24px auto auto -30px;
+      width: 58%;
+      height: 105%;
+      border: 18px solid var(--pop);
+      border-radius: 46% 54% 38% 62% / 35% 48% 52% 65%;
+      transform: rotate(-8deg);
+    }
+
+    .scheme.one .wavy-mark {
+      border-width: 12px;
+      border-color: rgba(21, 134, 92, 0.88);
+      border-radius: 64% 36% 58% 42% / 48% 58% 42% 52%;
+    }
+
+    .scheme.two .wavy-mark {
+      border-width: 14px;
+      border-color: rgba(245, 147, 86, 0.72);
+      border-radius: 54% 46% 42% 58% / 42% 60% 40% 58%;
+    }
+
+    .scheme.three .wavy-mark::before,
+    .scheme.three .wavy-mark::after {
+      content: "";
+      position: absolute;
+      width: 80%;
+      height: 94%;
+      border: inherit;
+      border-radius: inherit;
+      left: 46%;
+      top: -8%;
+    }
+
+    .scheme.three .wavy-mark::after {
+      left: 96%;
+      top: 8%;
+    }
+
+    .date-line {
+      position: absolute;
+      left: 48%;
+      top: 58%;
+      z-index: 1;
+      color: var(--panel);
+      font-size: clamp(2.3rem, 5vw, 4.4rem);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .scheme.two .date-line,
+    .scheme.one .date-line { color: var(--pop); opacity: 0.78; }
+
+    .big-word {
+      position: absolute;
+      right: 20px;
+      bottom: 18px;
+      color: var(--pop);
+      font-family: "Fraunces", "Noto Serif SC", serif;
+      font-size: clamp(4rem, 9vw, 8rem);
+      font-style: italic;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 0.78;
+    }
+
+    .scheme.one .big-word { color: var(--main); opacity: 0.2; }
+    .scheme.two .big-word { color: var(--main); opacity: 0.36; }
+
+    .poster-content {
+      display: grid;
+      gap: 18px;
+      padding: 22px;
+      background: var(--bg);
+    }
+
+    .poster-content h3 {
+      color: var(--text);
+      font-family: "Noto Serif SC", serif;
+      font-size: clamp(1.25rem, 2.2vw, 1.95rem);
+      line-height: 1.16;
+    }
+
+    .poster-content p {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 3px 11px;
+      border-radius: 999px;
+      color: var(--text);
+      background: var(--panel);
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .chip.primary {
+      color: var(--bg);
+      background: var(--main);
+    }
+
+    .chip.pop {
+      color: var(--bg);
+      background: var(--pop);
+    }
+
+    .usage-grid {
+      display: grid;
+      grid-template-columns: 0.62fr 1fr;
+      gap: clamp(18px, 2.4vw, 32px);
+      align-items: stretch;
+    }
+
+    .palette-table {
+      display: grid;
+      border: 1px solid rgba(26, 26, 46, 0.12);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.42);
+    }
+
+    .palette-row {
+      display: grid;
+      grid-template-columns: 88px 1fr 112px;
+      min-height: 58px;
+      border-bottom: 1px solid rgba(26, 26, 46, 0.09);
+    }
+
+    .palette-row:last-child { border-bottom: 0; }
+
+    .palette-sample { width: 100%; height: 100%; }
+
+    .palette-meta {
+      padding: 10px 14px;
+      align-self: center;
+    }
+
+    .palette-meta strong {
+      display: block;
+      font-family: "Noto Serif SC", serif;
+      line-height: 1.2;
+    }
+
+    .palette-meta span {
+      color: var(--ink-soft);
+      font-size: 0.76rem;
+    }
+
+    .palette-hex {
+      align-self: center;
+      padding-right: 14px;
+      color: var(--ink-soft);
+      font-family: "Fira Code", ui-monospace, monospace;
+      font-size: 0.75rem;
+      text-align: right;
+    }
+
+    .compare-notes {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(18px, 2vw, 28px);
+    }
+
+    .note {
+      position: relative;
+      min-height: 250px;
+      padding: 28px 24px;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid rgba(26, 26, 46, 0.12);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .note::after {
+      content: attr(data-num);
+      position: absolute;
+      right: 8px;
+      bottom: -26px;
+      color: var(--main);
+      font-family: "Fraunces", serif;
+      font-size: 7rem;
+      font-weight: 900;
+      line-height: 1;
+      opacity: 0.12;
+    }
+
+    .note h3 {
+      margin-bottom: 14px;
+      font-family: "Noto Serif SC", serif;
+      font-size: 1.3rem;
+      line-height: 1.18;
+    }
+
+    .note p {
+      position: relative;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .note .bar {
+      width: 76px;
+      height: 10px;
+      margin-bottom: 28px;
+      background: var(--main);
+      border-radius: 999px;
+    }
+
+    @media (max-width: 1100px) {
+      .hero,
+      .usage-grid { grid-template-columns: 1fr; }
+      .scheme-grid,
+      .compare-notes { grid-template-columns: 1fr; }
+      .poster { min-height: auto; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 18px; }
+      .poster-stage { min-height: 300px; }
+      .date-line { left: 28%; top: 54%; }
+      .palette-row { grid-template-columns: 64px 1fr; }
+      .palette-hex { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero">
+      <div>
+        <span class="eyebrow">Color Scheme Preview</span>
+        <h1>三套配色，同一版式对比</h1>
+      </div>
+      <aside class="note-card">
+        <strong>方案三的判断标准</strong>
+        <p>不是把图里的颜色直接搬过来，而是保留陶橙、温灰、墨黑的展览海报感，再补出可长期用于页面的浅底色和次级灰。</p>
+      </aside>
+    </section>
+
+    <h2 class="section-title">01. 同一张海报卡片的气质差异</h2>
+    <section class="scheme-grid" aria-label="三套配色海报对比">
+      <article class="scheme one">
+        <header class="scheme-header">
+          <span class="scheme-kicker">Scheme 01</span>
+          <h2 class="scheme-name">植物绿系</h2>
+        </header>
+        <div class="swatches" aria-hidden="true">
+          <span class="swatch main"></span><span class="swatch accent"></span><span class="swatch pop"></span><span class="swatch support"></span><span class="swatch bg"></span><span class="swatch panel"></span>
+        </div>
+        <div class="poster">
+          <div class="poster-stage">
+            <div class="wavy-mark"></div>
+            <div class="date-line">DIA 09</div>
+            <div class="big-word">grow</div>
+          </div>
+          <div class="poster-content">
+            <h3>沉静、自然、适合长期阅读</h3>
+            <p>绿色系更像内容品牌的稳定底色，温和、亲近，但视觉记忆点相对收敛。</p>
+            <div class="chip-row">
+              <span class="chip primary">自然</span>
+              <span class="chip">轻内容</span>
+              <span class="chip pop">稳定</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="scheme two">
+        <header class="scheme-header">
+          <span class="scheme-kicker">Scheme 02</span>
+          <h2 class="scheme-name">暖奶油 + 钢蓝</h2>
+        </header>
+        <div class="swatches" aria-hidden="true">
+          <span class="swatch main"></span><span class="swatch accent"></span><span class="swatch pop"></span><span class="swatch support"></span><span class="swatch bg"></span><span class="swatch panel"></span>
+        </div>
+        <div class="poster">
+          <div class="poster-stage">
+            <div class="wavy-mark"></div>
+            <div class="date-line">DIA 09</div>
+            <div class="big-word">warm</div>
+          </div>
+          <div class="poster-content">
+            <h3>温暖、人文、冷暖平衡</h3>
+            <p>钢蓝压住暖橙，整体更柔和，适合个人主页、文章集合和活动介绍。</p>
+            <div class="chip-row">
+              <span class="chip primary">人文</span>
+              <span class="chip">柔和</span>
+              <span class="chip pop">CTA清晰</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="scheme three">
+        <header class="scheme-header">
+          <span class="scheme-kicker">Scheme 03</span>
+          <h2 class="scheme-name">陶橙 + 暖灰 + 墨黑</h2>
+        </header>
+        <div class="swatches" aria-hidden="true">
+          <span class="swatch main"></span><span class="swatch accent"></span><span class="swatch pop"></span><span class="swatch support"></span><span class="swatch bg"></span><span class="swatch panel"></span>
+        </div>
+        <div class="poster">
+          <div class="poster-stage">
+            <div class="wavy-mark"></div>
+            <div class="date-line">DIA 09</div>
+            <div class="big-word">pax</div>
+          </div>
+          <div class="poster-content">
+            <h3>艺术海报、克制冲击、复古现代</h3>
+            <p>方案三最有记忆点，适合封面、活动页、观点型内容；正文页要控制陶橙面积。</p>
+            <div class="chip-row">
+              <span class="chip primary">海报感</span>
+              <span class="chip">高识别</span>
+              <span class="chip pop">强标题</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <h2 class="section-title">02. 方案三色值落地表</h2>
+    <section class="usage-grid">
+      <div class="palette-table" aria-label="方案三配色色值">
+        <div class="palette-row">
+          <div class="palette-sample" style="background:#D75926;"></div>
+          <div class="palette-meta"><strong>陶橙</strong><span>主色 60%，标题、大色块、重点编号</span></div>
+          <div class="palette-hex">#D75926</div>
+        </div>
+        <div class="palette-row">
+          <div class="palette-sample" style="background:#BDB8B6;"></div>
+          <div class="palette-meta"><strong>石灰</strong><span>强调 30%，分区背景、日期文字</span></div>
+          <div class="palette-hex">#BDB8B6</div>
+        </div>
+        <div class="palette-row">
+          <div class="palette-sample" style="background:#1B1B18;"></div>
+          <div class="palette-meta"><strong>墨黑</strong><span>点睛 10%，粗线条、强 CTA、重点标题</span></div>
+          <div class="palette-hex">#1B1B18</div>
+        </div>
+        <div class="palette-row">
+          <div class="palette-sample" style="background:#AFA9A6;"></div>
+          <div class="palette-meta"><strong>雾灰</strong><span>辅助，次级文字、分割线、低对比标注</span></div>
+          <div class="palette-hex">#AFA9A6</div>
+        </div>
+        <div class="palette-row">
+          <div class="palette-sample" style="background:#F7EFE9;"></div>
+          <div class="palette-meta"><strong>暖纸</strong><span>主背景，缓和陶橙与墨黑的冲突</span></div>
+          <div class="palette-hex">#F7EFE9</div>
+        </div>
+        <div class="palette-row">
+          <div class="palette-sample" style="background:#E6DED8;"></div>
+          <div class="palette-meta"><strong>灰陶</strong><span>次背景，卡片、注释块、局部留白区</span></div>
+          <div class="palette-hex">#E6DED8</div>
+        </div>
+      </div>
+
+      <article class="scheme three">
+        <div class="poster">
+          <div class="poster-stage">
+            <div class="wavy-mark"></div>
+            <div class="date-line">DIA 09</div>
+            <div class="big-word">idea</div>
+          </div>
+          <div class="poster-content">
+            <h3>推荐用法：让陶橙负责记忆点，让暖纸负责阅读</h3>
+            <p>如果整页都用陶橙，会变成强海报而不是内容页面。更好的比例是：首屏或关键模块用大橙色，正文和组件回到暖纸、灰陶、墨黑。</p>
+            <div class="chip-row">
+              <span class="chip primary">大面积首屏</span>
+              <span class="chip">正文暖纸</span>
+              <span class="chip pop">黑色只做骨架</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <h2 class="section-title">03. 简短判断</h2>
+    <section class="compare-notes" aria-label="配色选择建议">
+      <article class="note scheme one" data-num="01">
+        <div class="bar"></div>
+        <h3>方案一最稳</h3>
+        <p>适合长期内容、知识库、教程页面。它不会抢内容，但也不如方案三有传播截图的冲击力。</p>
+      </article>
+      <article class="note scheme two" data-num="02">
+        <div class="bar"></div>
+        <h3>方案二最温和</h3>
+        <p>适合个人主页和介绍页，冷暖关系舒服。缺点是独特性不如方案三，需要靠字体和排版补记忆点。</p>
+      </article>
+      <article class="note scheme three" data-num="03">
+        <div class="bar"></div>
+        <h3>方案三最有态度</h3>
+        <p>更像展览海报和独立杂志，适合封面、活动页、观点型内容。使用时要克制橙色面积，避免长阅读疲劳。</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

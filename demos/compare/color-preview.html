@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>配色预览 — 新旧对比</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #1A1A2E;
+      background: #fefcf6;
+      padding: 2rem;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      margin: 3rem 0 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .swatch-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .swatch {
+      width: 140px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+
+    .swatch-color {
+      height: 80px;
+    }
+
+    .swatch-info {
+      padding: 0.6rem 0.8rem;
+      background: #fff;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    .swatch-info .name { font-weight: 700; }
+    .swatch-info .hex { color: #888; }
+    .swatch-info .role { color: #555; font-size: 0.72rem; margin-top: 2px; }
+
+    .side-by-side {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 800px) {
+      .side-by-side { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      border-radius: 16px;
+      padding: 2rem;
+    }
+
+    .panel h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.5rem;
+      opacity: 0.7;
+    }
+
+    /* ===== 场景组件 ===== */
+    .scene-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #888;
+      margin: 2rem 0 0.5rem;
+    }
+
+    .scene-label:first-child { margin-top: 0; }
+
+    /* 标题 */
+    .demo-h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      margin-bottom: 0.25rem;
+    }
+
+    .demo-h2 {
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    /* 超链接 */
+    .demo-link {
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 2px;
+      cursor: default;
+    }
+
+    /* Badge */
+    .demo-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    /* CTA 按钮 */
+    .demo-cta {
+      display: inline-block;
+      padding: 10px 28px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #fff;
+      cursor: default;
+    }
+
+    /* 高亮下划线 */
+    .demo-underline {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-thickness: 3px;
+      font-weight: 700;
+    }
+
+    /* 选中文本 */
+    .demo-selection {
+      padding: 4px 8px;
+      border-radius: 2px;
+      font-weight: 600;
+    }
+
+    /* 卡片 */
+    .demo-card {
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 2px solid transparent;
+    }
+
+    .demo-card h4 {
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .demo-card p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    /* 装饰线 */
+    .demo-decorative-line {
+      height: 6px;
+      border-radius: 3px;
+      width: 60px;
+      margin: 0.5rem 0;
+    }
+
+    /* 段落文字 */
+    .demo-para {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      margin-bottom: 0.8rem;
+    }
+
+    /* 对话气泡 */
+    .demo-bubble {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin: 4px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(0,0,0,.06);
+      margin: 2rem 0;
+    }
+  </style>
+</head>
+<body>
+
+<h2>🎨 色板对比</h2>
+
+<!-- 原配色色板 -->
+<h3 style="margin-bottom:0.5rem;">原配色</h3>
+<div class="swatch-row">
+  <div class="swatch">
+    <div class="swatch-color" style="background:#2B7FD8;"></div>
+    <div class="swatch-info"><div class="name">蓝</div><div class="hex">#2B7FD8</div><div class="role">主色 60%</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background:#F4D758;"></div>
+    <div class="swatch-info"><div class="name">黄/金</div><div class="hex">#F4D758</div><div class="role">强调 30%</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background:#E84A5F;"></div>
+    <div class="swatch-info"><div class="name">红</div><div class="hex">#E84A5F</div><div class="role">点缀 10%</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background:#fefcf6; border:1px solid #e0e0e0;"></div>
+    <div class="swatch-info"><div class="name">暖白</div><div class="hex">#fefcf6</div><div class="role">主背景</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background:#faf6eb; border:1px solid #e0e0e0;"></div>
+    <div class="swatch-info"><div class="name">深奶</div><div class="hex">#faf6eb</div><div class="role">次背景</div></div>
+  </div>
+</div>
+
+<!-- 新配色色板 -->
+<h3 style="margin-bottom:0.5rem;">新配色方案</h3>
+<div class="swatch-row">
+  <div class="swatch">
+    <div class="swatch-color" style="background:#15865C;"></div>
+    <div class="swatch-info"><div class="name">深绿</div><div class="hex">#15865C</div><div class="role">主色 60%</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background:#ADC965;"></div>
+    <div class="swatch-info"><div class="name">橄榄绿</div><div class="hex">#ADC965</div><div class="role">强调 30%</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background:#008A5B;"></div>
+    <div class="swatch-info"><div class="name">翠绿</div><div class="hex">#008A5B</div><div class="role">点睛 10%</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background:#F7F9F3;"></div>
+    <div class="swatch-info"><div class="name">浅草绿</div><div class="hex">#F7F9F3</div><div class="role">主背景</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background:#EFF3E6;"></div>
+    <div class="swatch-info"><div class="name">浅芽绿</div><div class="hex">#EFF3E6</div><div class="role">次背景</div></div>
+  </div>
+</div>
+
+<!-- ==================== 场景对比 ==================== -->
+<h2>📐 场景对比</h2>
+<div class="side-by-side">
+
+  <!-- ===== 原配色 ===== -->
+  <div class="panel" style="background:#fefcf6; border:1px solid #e8e8e0;">
+    <h3>🔵 原配色方案</h3>
+
+    <div class="scene-label">大标题</div>
+    <div class="demo-h1" style="color:#2B7FD8;">关于不二的设计哲学</div>
+
+    <div class="scene-label">Section 标题</div>
+    <div class="demo-h2" style="color:#2B7FD8;">最新文章与思考</div>
+
+    <div class="scene-label">超链接</div>
+    <p>这是一段正文中包含一个 <span class="demo-link" style="color:#2B7FD8; text-decoration-color:#2B7FD8;">超链接示例</span> 的效果。</p>
+
+    <div class="scene-label">Badge / 标签</div>
+    <span class="demo-badge" style="background:#F4D758; color:#1A1A2E;">新发布</span>
+    <span class="demo-badge" style="background:#F4D758; color:#1A1A2E;">热门</span>
+
+    <div class="scene-label">CTA 按钮</div>
+    <span class="demo-cta" style="background:#E84A5F;">立即报名 →</span>
+    <span class="demo-cta" style="background:#E84A5F; margin-left:0.5rem;">了解更多</span>
+
+    <div class="scene-label">高亮下划线</div>
+    <p>这段文字中有一个 <span class="demo-underline" style="text-decoration-color:#E84A5F;">重点强调</span> 的内容。</p>
+
+    <div class="scene-label">选中文本 (::selection)</div>
+    <p>试试选中这段文字，背景会变成 <span class="demo-selection" style="background:#F4D758;">金黄色高亮</span>。</p>
+
+    <div class="scene-label">装饰线</div>
+    <div class="demo-decorative-line" style="background:#F4D758;"></div>
+    <div class="demo-decorative-line" style="background:#E84A5F; width:30px;"></div>
+
+    <div class="scene-label">卡片 (深奶底)</div>
+    <div class="demo-card" style="background:#faf6eb;">
+      <h4>文章卡片标题</h4>
+      <p style="color:#4A4A5A;">这是一段辅助说明文字，描述卡片的内容摘要。</p>
+    </div>
+
+    <div class="scene-label">对话气泡</div>
+    <span class="demo-bubble" style="background:#2B7FD8; color:#fff;">不二说</span>
+    <span class="demo-bubble" style="background:#F4D758; color:#1A1A2E;">你说</span>
+
+    <div class="scene-label">主背景 + 次背景分层</div>
+    <div style="background:#fefcf6; padding:1rem; border-radius:8px; margin-bottom:0.5rem;">
+      <span style="font-size:0.8rem;">主背景 #fefcf6</span>
+    </div>
+    <div style="background:#faf6eb; padding:1rem; border-radius:8px;">
+      <span style="font-size:0.8rem;">次背景 #faf6eb（卡片/分区）</span>
+    </div>
+  </div>
+
+  <!-- ===== 新配色 ===== -->
+  <div class="panel" style="background:#F7F9F3;">
+    <h3>🟢 新配色方案（植物绿系）</h3>
+
+    <div class="scene-label">大标题</div>
+    <div class="demo-h1" style="color:#15865C;">关于不二的设计哲学</div>
+
+    <div class="scene-label">Section 标题</div>
+    <div class="demo-h2" style="color:#15865C;">最新文章与思考</div>
+
+    <div class="scene-label">超链接</div>
+    <p>这是一段正文中包含一个 <span class="demo-link" style="color:#15865C; text-decoration-color:#15865C;">超链接示例</span> 的效果。</p>
+
+    <div class="scene-label">Badge / 标签</div>
+    <span class="demo-badge" style="background:#ADC965; color:#1A1A2E;">新发布</span>
+    <span class="demo-badge" style="background:#ADC965; color:#1A1A2E;">热门</span>
+
+    <div class="scene-label">CTA 按钮</div>
+    <span class="demo-cta" style="background:#008A5B;">立即报名 →</span>
+    <span class="demo-cta" style="background:#008A5B; margin-left:0.5rem;">了解更多</span>
+
+    <div class="scene-label">高亮下划线</div>
+    <p>这段文字中有一个 <span class="demo-underline" style="text-decoration-color:#008A5B;">重点强调</span> 的内容。</p>
+
+    <div class="scene-label">选中文本 (::selection)</div>
+    <p>试试选中这段文字，背景会变成 <span class="demo-selection" style="background:#ADC965;">橄榄绿高亮</span>。</p>
+
+    <div class="scene-label">装饰线</div>
+    <div class="demo-decorative-line" style="background:#ADC965;"></div>
+    <div class="demo-decorative-line" style="background:#008A5B; width:30px;"></div>
+
+    <div class="scene-label">卡片 (次背景底)</div>
+    <div class="demo-card" style="background:#EFF3E6;">
+      <h4>文章卡片标题</h4>
+      <p style="color:#4A4A5A;">这是一段辅助说明文字，描述卡片的内容摘要。</p>
+    </div>
+
+    <div class="scene-label">对话气泡</div>
+    <span class="demo-bubble" style="background:#15865C; color:#fff;">不二说</span>
+    <span class="demo-bubble" style="background:#ADC965; color:#1A1A2E;">你说</span>
+
+    <div class="scene-label">主背景 + 次背景分层</div>
+    <div style="background:#F7F9F3; padding:1rem; border-radius:8px; margin-bottom:0.5rem;">
+      <span style="font-size:0.8rem;">主背景 #F7F9F3</span>
+    </div>
+    <div style="background:#EFF3E6; padding:1rem; border-radius:8px;">
+      <span style="font-size:0.8rem;">次背景 #EFF3E6（卡片/分区）</span>
+    </div>
+  </div>
+
+</div>
+
+<h2>🔍 关键差异速览</h2>
+<table style="width:100%; border-collapse:collapse; margin-top:1rem; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.06);">
+  <thead>
+    <tr style="background:#1A1A2E; color:#fff;">
+      <th style="padding:12px 16px; text-align:left;">维度</th>
+      <th style="padding:12px 16px; text-align:left;">原配色</th>
+      <th style="padding:12px 16px; text-align:left;">新配色</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="background:#fff;">
+      <td style="padding:10px 16px; font-weight:700;">整体气质</td>
+      <td style="padding:10px 16px;">活泼、温暖、有张力</td>
+      <td style="padding:10px 16px;">沉静、质感、自然</td>
+    </tr>
+    <tr style="background:#fafafa;">
+      <td style="padding:10px 16px; font-weight:700;">主色辨识度</td>
+      <td style="padding:10px 16px;">蓝 = 高，科技感</td>
+      <td style="padding:10px 16px;">深绿 = 中高，稳重感</td>
+    </tr>
+    <tr style="background:#fff;">
+      <td style="padding:10px 16px; font-weight:700;">点睛力度</td>
+      <td style="padding:10px 16px;">红 = 极强，瞬间抓眼</td>
+      <td style="padding:10px 16px;">翠绿 = 中等，同色系内跳脱</td>
+    </tr>
+    <tr style="background:#fafafa;">
+      <td style="padding:10px 16px; font-weight:700;">色彩对比</td>
+      <td style="padding:10px 16px;">暖+冷 强对比</td>
+      <td style="padding:10px 16px;">全绿色系 弱对比</td>
+    </tr>
+    <tr style="background:#fff;">
+      <td style="padding:10px 16px; font-weight:700;">适合场景</td>
+      <td style="padding:10px 16px;">需要吸引注意力的页面</td>
+      <td style="padding:10px 16px;">需要沉静阅读、质感表达</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>🎯 我的观察</h2>
+<div style="background:#fff; border-radius:12px; padding:1.5rem 2rem; box-shadow:0 2px 8px rgba(0,0,0,.06); line-height:1.9;">
+
+<p><strong>✅ 做得好的地方：</strong></p>
+<ul style="margin-left:1.2rem; margin-bottom:1rem;">
+  <li>主色 <code>#15865C</code> 做标题很舒服，不刺眼，适合大面积使用</li>
+  <li>橄榄绿 <code>#ADC965</code> 做 badges 和装饰元素温暖自然</li>
+  <li>两个背景色 <code>#E6E7D2</code> + <code>#EBEED1</code> 分层效果柔和</li>
+  <li>整体配色统一、克制，符合品牌 DNA 「有设计师眼光」的约束</li>
+</ul>
+
+<p><strong>⚠️ 可能需要留意的：</strong></p>
+<ul style="margin-left:1.2rem;">
+  <li>CTA 按钮（<span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#008A5B;vertical-align:middle;"></span> <code>#008A5B</code>）在浅绿背景上不够"跳"——和原来红色 CTA 的吸引力差距明显</li>
+  <li>全绿色系决定了这个配色偏「安静」，不适合需要强号召力的场景</li>
+  <li>如果未来需要一个真正炸裂的强调色，可能还是要引入一个暖色</li>
+</ul>
+</div>
+
+</body>
+</html>

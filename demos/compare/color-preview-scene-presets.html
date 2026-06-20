@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>不同预设场景配色对比</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1A1A2E;
+      --muted: #4A4A5A;
+      --paper: #fefcf6;
+      --paper-deep: #faf6eb;
+      --line: rgba(26, 26, 46, 0.12);
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 2%, rgba(215, 89, 38, 0.11), transparent 34rem),
+        radial-gradient(circle at 88% 18%, rgba(109, 152, 186, 0.13), transparent 30rem),
+        linear-gradient(180deg, #fefcf6 0%, #f6efe7 100%);
+      font-family: "Noto Sans SC", -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
+      line-height: 1.7;
+      padding: clamp(22px, 4vw, 56px);
+    }
+
+    .page {
+      max-width: 1480px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+      gap: clamp(28px, 5vw, 72px);
+      align-items: end;
+      margin-bottom: clamp(48px, 8vw, 100px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: #D75926;
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 52px;
+      height: 8px;
+      background: #D75926;
+      border-radius: 999px;
+    }
+
+    h1 {
+      max-width: 980px;
+      font-family: "Fraunces", "Noto Serif SC", serif;
+      font-size: clamp(2.9rem, 7.4vw, 7rem);
+      line-height: 0.96;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .hero-card {
+      position: relative;
+      padding: 24px;
+      color: #F7EFE9;
+      background: #1B1B18;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .hero-card::after {
+      content: "4";
+      position: absolute;
+      right: -2px;
+      bottom: -42px;
+      color: rgba(247, 239, 233, 0.14);
+      font-family: "Fraunces", serif;
+      font-size: 9rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .hero-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #D75926;
+      font-family: "Noto Serif SC", serif;
+      font-size: 1.08rem;
+    }
+
+    .hero-card p {
+      position: relative;
+      z-index: 1;
+      color: rgba(247, 239, 233, 0.82);
+      font-size: 0.9rem;
+    }
+
+    .scenario {
+      margin-bottom: clamp(62px, 10vw, 128px);
+    }
+
+    .scenario-head {
+      display: grid;
+      grid-template-columns: 0.34fr 1fr;
+      gap: clamp(24px, 4vw, 56px);
+      align-items: end;
+      margin-bottom: 22px;
+      border-top: 2px solid rgba(26, 26, 46, 0.16);
+      padding-top: 18px;
+    }
+
+    .scenario-num {
+      color: rgba(26, 26, 46, 0.22);
+      font-family: "Fraunces", serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 900;
+      line-height: 0.9;
+    }
+
+    .scenario-title {
+      font-family: "Noto Serif SC", serif;
+      font-size: clamp(1.45rem, 3vw, 2.35rem);
+      line-height: 1.14;
+    }
+
+    .scenario-desc {
+      max-width: 760px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(18px, 2vw, 28px);
+      align-items: stretch;
+    }
+
+    .scheme {
+      --main: #15865C;
+      --accent: #ADC965;
+      --pop: #008A5B;
+      --support: #8AA85B;
+      --bg: #F7F9F3;
+      --panel: #EFF3E6;
+      --text: #1A1A2E;
+      --soft: #4A4A5A;
+      color: var(--text);
+    }
+
+    .scheme.two {
+      --main: #6d98ba;
+      --accent: #f59356;
+      --pop: #ff6366;
+      --support: #8f8c3d;
+      --bg: #FCFAF5;
+      --panel: #F5EFE4;
+      --text: #1A1A2E;
+      --soft: #4A4A5A;
+    }
+
+    .scheme.three {
+      --main: #D75926;
+      --accent: #BDB8B6;
+      --pop: #1B1B18;
+      --support: #AFA9A6;
+      --bg: #F7EFE9;
+      --panel: #E6DED8;
+      --text: #1B1B18;
+      --soft: #5F5855;
+    }
+
+    .preview {
+      position: relative;
+      min-height: 520px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 22px 60px rgba(31, 25, 16, 0.08);
+    }
+
+    .scheme-label {
+      position: absolute;
+      left: 16px;
+      top: 14px;
+      z-index: 5;
+      color: var(--main);
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 3px 11px;
+      border-radius: 999px;
+      color: var(--bg);
+      background: var(--main);
+      font-size: 0.72rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .pill.alt { color: var(--text); background: var(--panel); }
+    .pill.pop { color: var(--bg); background: var(--pop); }
+
+    .mini-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 16px;
+      color: var(--bg);
+      background: var(--pop);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 900;
+    }
+
+    .preview h3,
+    .preview h4 {
+      font-family: "Noto Serif SC", serif;
+      line-height: 1.14;
+    }
+
+    .preview p {
+      color: var(--soft);
+      font-size: 0.82rem;
+    }
+
+    /* Landing */
+    .landing {
+      display: grid;
+      grid-template-rows: 1fr auto;
+      min-height: 560px;
+    }
+
+    .landing-hero {
+      position: relative;
+      padding: 70px 24px 24px;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--bg) 0 42%, var(--main) 42% 100%);
+    }
+
+    .scheme.two .landing-hero {
+      background:
+        radial-gradient(circle at 18% 16%, rgba(245, 147, 86, 0.28), transparent 8rem),
+        linear-gradient(135deg, var(--bg) 0 54%, var(--panel) 54% 100%);
+    }
+
+    .scheme.three .landing-hero {
+      background: linear-gradient(90deg, var(--main) 0 56%, var(--accent) 56% 100%);
+    }
+
+    .landing-hero::after {
+      content: "LAUNCH";
+      position: absolute;
+      right: -12px;
+      bottom: 16px;
+      color: var(--pop);
+      font-family: "Fraunces", serif;
+      font-size: clamp(3.8rem, 7vw, 7rem);
+      font-style: italic;
+      font-weight: 900;
+      line-height: 0.8;
+      opacity: 0.22;
+    }
+
+    .scheme.three .landing-hero::after { opacity: 1; }
+
+    .landing-title {
+      position: relative;
+      z-index: 1;
+      max-width: 380px;
+      color: var(--text);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 900;
+    }
+
+    .scheme.three .landing-title { color: var(--pop); }
+
+    .landing-copy {
+      position: relative;
+      z-index: 1;
+      max-width: 300px;
+      margin-top: 16px;
+      color: var(--soft);
+    }
+
+    .scheme.three .landing-copy { color: rgba(27, 27, 24, 0.76); }
+
+    .landing-meta {
+      display: grid;
+      gap: 14px;
+      padding: 22px 24px;
+      background: var(--bg);
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* Tutorial */
+    .tutorial {
+      padding: 64px 22px 22px;
+      min-height: 560px;
+      background:
+        linear-gradient(90deg, transparent 0 18px, rgba(26, 26, 46, 0.035) 18px 19px, transparent 19px 38px),
+        var(--bg);
+    }
+
+    .tutorial-main {
+      display: grid;
+      grid-template-columns: 0.36fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .tutorial-num {
+      position: sticky;
+      top: 12px;
+      color: var(--main);
+      font-family: "Fraunces", serif;
+      font-size: 5.2rem;
+      font-weight: 900;
+      line-height: 0.8;
+      opacity: 0.24;
+    }
+
+    .tutorial-content {
+      display: grid;
+      gap: 14px;
+    }
+
+    .tutorial-content h3 {
+      font-size: 1.55rem;
+      color: var(--text);
+    }
+
+    .step-card {
+      padding: 14px;
+      background: var(--panel);
+      border-radius: 8px;
+    }
+
+    .step-card strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--main);
+      font-family: "Noto Serif SC", serif;
+      font-size: 0.95rem;
+    }
+
+    .quote-strip {
+      margin-top: 18px;
+      padding: 16px;
+      color: var(--bg);
+      background: var(--pop);
+      border-radius: 8px;
+      font-family: "Noto Serif SC", serif;
+      font-size: 1.05rem;
+      line-height: 1.35;
+    }
+
+    /* App */
+    .app-preview {
+      min-height: 560px;
+      background: var(--bg);
+    }
+
+    .app-topbar {
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      background: var(--panel);
+      border-bottom: 1px solid rgba(26, 26, 46, 0.1);
+    }
+
+    .app-brand {
+      color: var(--main);
+      font-size: 0.8rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .app-tabs {
+      display: flex;
+      gap: 6px;
+      padding: 14px 18px 0;
+    }
+
+    .app-tab {
+      padding: 7px 12px;
+      color: var(--soft);
+      background: transparent;
+      border-bottom: 3px solid transparent;
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    .app-tab.active {
+      color: var(--main);
+      border-bottom-color: var(--main);
+    }
+
+    .app-body {
+      display: grid;
+      grid-template-columns: 0.75fr 1fr;
+      gap: 14px;
+      padding: 18px;
+    }
+
+    .metric {
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.42);
+      border: 1px solid rgba(26, 26, 46, 0.08);
+      border-radius: 8px;
+    }
+
+    .metric strong {
+      display: block;
+      color: var(--pop);
+      font-family: "Fraunces", serif;
+      font-size: 2.4rem;
+      line-height: 1;
+    }
+
+    .task-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .task {
+      display: grid;
+      grid-template-columns: 10px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      background: var(--panel);
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      background: var(--main);
+      border-radius: 999px;
+    }
+
+    .canvas {
+      grid-column: 1 / -1;
+      min-height: 160px;
+      position: relative;
+      background-image: radial-gradient(circle, rgba(26, 26, 46, 0.16) 1px, transparent 1px);
+      background-size: 22px 22px;
+      border: 1px dashed rgba(26, 26, 46, 0.18);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .canvas-card {
+      position: absolute;
+      left: 26px;
+      top: 26px;
+      width: 150px;
+      padding: 14px;
+      background: var(--bg);
+      border: 2px solid var(--main);
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .canvas-card.alt {
+      left: auto;
+      right: 24px;
+      top: 64px;
+      border-color: var(--pop);
+    }
+
+    /* Cards */
+    .xhs-preview {
+      min-height: 560px;
+      display: grid;
+      place-items: center;
+      padding: 52px 20px 24px;
+      background: var(--bg);
+    }
+
+    .xhs-card {
+      width: min(100%, 320px);
+      aspect-ratio: 3 / 4;
+      position: relative;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      background: var(--bg);
+      border: 12px solid var(--accent);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .scheme.three .xhs-card { border-color: var(--main); }
+
+    .xhs-visual {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, var(--main) 0 52%, var(--panel) 52% 100%);
+    }
+
+    .xhs-visual::before,
+    .xhs-visual::after {
+      content: "";
+      position: absolute;
+      width: 70%;
+      height: 108%;
+      left: -22%;
+      top: -10%;
+      border: 14px solid var(--pop);
+      border-radius: 48% 52% 42% 58% / 38% 54% 46% 62%;
+      transform: rotate(-10deg);
+    }
+
+    .xhs-visual::after {
+      left: 38%;
+      top: -18%;
+    }
+
+    .scheme.one .xhs-visual::before,
+    .scheme.one .xhs-visual::after {
+      border-width: 10px;
+      opacity: 0.78;
+    }
+
+    .scheme.two .xhs-visual::before,
+    .scheme.two .xhs-visual::after {
+      border-color: var(--accent);
+      opacity: 0.72;
+    }
+
+    .xhs-title {
+      position: absolute;
+      left: 18px;
+      bottom: 16px;
+      right: 18px;
+      color: var(--pop);
+      font-family: "Noto Serif SC", serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      line-height: 1.06;
+    }
+
+    .scheme.three .xhs-title { color: var(--bg); }
+
+    .xhs-content {
+      padding: 18px;
+      background: var(--bg);
+    }
+
+    .xhs-content h3 {
+      margin-bottom: 8px;
+      font-size: 1.2rem;
+    }
+
+    .verdict {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(26, 26, 46, 0.1);
+      color: var(--soft);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    @media (max-width: 1180px) {
+      .compare-grid { grid-template-columns: 1fr; }
+      .preview { min-height: auto; }
+      .landing, .tutorial, .app-preview, .xhs-preview { min-height: auto; }
+    }
+
+    @media (max-width: 760px) {
+      body { padding: 18px; }
+      .hero, .scenario-head { grid-template-columns: 1fr; }
+      .scenario-num { font-size: 3.5rem; }
+      .app-body, .tutorial-main { grid-template-columns: 1fr; }
+      .tutorial-num { position: static; }
+      .landing-hero { min-height: 340px; }
+      .xhs-card { width: min(100%, 300px); }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <span class="eyebrow">Scene Presets</span>
+        <h1>不同预设场景的配色对比</h1>
+      </div>
+      <aside class="hero-card">
+        <strong>看法先放前面</strong>
+        <p>方案三在封面、活动、观点表达里最有态度；方案一适合稳定内容；方案二适合个人主页和温和叙事。这个页面按场景拆开看，不只看色板。</p>
+      </aside>
+    </section>
+
+    <section class="scenario">
+      <header class="scenario-head">
+        <div class="scenario-num">01</div>
+        <div>
+          <h2 class="scenario-title">活动 Landing / 分享会首屏</h2>
+          <p class="scenario-desc">看首屏冲击力、CTA 明确度和视觉记忆点。这个场景需要强节奏，方案三会更像展览海报。</p>
+        </div>
+      </header>
+      <div class="compare-grid">
+        <article class="scheme one preview landing">
+          <span class="scheme-label">Scheme 01</span>
+          <div class="landing-hero">
+            <h3 class="landing-title">一场关于个人品牌的现场实验</h3>
+            <p class="landing-copy">把内容、设计和 AI 工作流揉成一个可复制的表达系统。</p>
+          </div>
+          <div class="landing-meta">
+            <div class="chip-row"><span class="pill">报名中</span><span class="pill alt">适合长期活动</span></div>
+            <span class="mini-btn">查看详情</span>
+            <p class="verdict">判断：稳、自然，但活动首屏的冲击力偏收。</p>
+          </div>
+        </article>
+
+        <article class="scheme two preview landing">
+          <span class="scheme-label">Scheme 02</span>
+          <div class="landing-hero">
+            <h3 class="landing-title">一场关于个人品牌的现场实验</h3>
+            <p class="landing-copy">把内容、设计和 AI 工作流揉成一个可复制的表达系统。</p>
+          </div>
+          <div class="landing-meta">
+            <div class="chip-row"><span class="pill">报名中</span><span class="pill alt">亲和力强</span></div>
+            <span class="mini-btn">查看详情</span>
+            <p class="verdict">判断：更像温和分享会，转化感舒服但不锋利。</p>
+          </div>
+        </article>
+
+        <article class="scheme three preview landing">
+          <span class="scheme-label">Scheme 03</span>
+          <div class="landing-hero">
+            <h3 class="landing-title">一场关于个人品牌的现场实验</h3>
+            <p class="landing-copy">把内容、设计和 AI 工作流揉成一个可复制的表达系统。</p>
+          </div>
+          <div class="landing-meta">
+            <div class="chip-row"><span class="pill">报名中</span><span class="pill alt">海报感最强</span></div>
+            <span class="mini-btn">查看详情</span>
+            <p class="verdict">判断：最适合活动首屏和传播截图，注意正文别全橙。</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="scenario">
+      <header class="scenario-head">
+        <div class="scenario-num">02</div>
+        <div>
+          <h2 class="scenario-title">教程 / 科普 / 长内容页面</h2>
+          <p class="scenario-desc">看长阅读舒适度、步骤承载和重点提示。这里不追求第一眼炸裂，重点是读得下去。</p>
+        </div>
+      </header>
+      <div class="compare-grid">
+        <article class="scheme one preview tutorial">
+          <span class="scheme-label">Scheme 01</span>
+          <div class="tutorial-main">
+            <div class="tutorial-num">02</div>
+            <div class="tutorial-content">
+              <h3>三步搭好内容系统</h3>
+              <p>先定主题，再拆结构，最后把每一篇内容沉淀成可复用模块。</p>
+              <div class="step-card"><strong>Step 1</strong><p>把灵感放进统一入口。</p></div>
+              <div class="step-card"><strong>Step 2</strong><p>按场景拆成卡片、文章、脚本。</p></div>
+              <div class="quote-strip">适合：教程、知识库、长期连载。</div>
+            </div>
+          </div>
+          <p class="verdict">判断：最适合长内容，绿色对阅读负担最低。</p>
+        </article>
+
+        <article class="scheme two preview tutorial">
+          <span class="scheme-label">Scheme 02</span>
+          <div class="tutorial-main">
+            <div class="tutorial-num">02</div>
+            <div class="tutorial-content">
+              <h3>三步搭好内容系统</h3>
+              <p>先定主题，再拆结构，最后把每一篇内容沉淀成可复用模块。</p>
+              <div class="step-card"><strong>Step 1</strong><p>把灵感放进统一入口。</p></div>
+              <div class="step-card"><strong>Step 2</strong><p>按场景拆成卡片、文章、脚本。</p></div>
+              <div class="quote-strip">适合：个人博客、温和教程。</div>
+            </div>
+          </div>
+          <p class="verdict">判断：阅读舒适，也更有个人主页气质。</p>
+        </article>
+
+        <article class="scheme three preview tutorial">
+          <span class="scheme-label">Scheme 03</span>
+          <div class="tutorial-main">
+            <div class="tutorial-num">02</div>
+            <div class="tutorial-content">
+              <h3>三步搭好内容系统</h3>
+              <p>先定主题，再拆结构，最后把每一篇内容沉淀成可复用模块。</p>
+              <div class="step-card"><strong>Step 1</strong><p>把灵感放进统一入口。</p></div>
+              <div class="step-card"><strong>Step 2</strong><p>按场景拆成卡片、文章、脚本。</p></div>
+              <div class="quote-strip">适合：观点型教程、短篇专题。</div>
+            </div>
+          </div>
+          <p class="verdict">判断：短内容很有力，长教程要减少橙色面积。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="scenario">
+      <header class="scenario-head">
+        <div class="scenario-num">03</div>
+        <div>
+          <h2 class="scenario-title">App / 看板 / 工具型页面</h2>
+          <p class="scenario-desc">看操作界面的清晰度、信息密度和按钮状态。功能页不能太抢戏，配色要为内容让路。</p>
+        </div>
+      </header>
+      <div class="compare-grid">
+        <article class="scheme one preview app-preview">
+          <span class="scheme-label">Scheme 01</span>
+          <div class="app-topbar"><span class="app-brand">Esther OS</span><span class="pill">同步</span></div>
+          <div class="app-tabs"><span class="app-tab active">今日</span><span class="app-tab">项目</span><span class="app-tab">素材</span></div>
+          <div class="app-body">
+            <div class="metric"><strong>12</strong><p>今日待处理素材</p></div>
+            <div class="task-list">
+              <div class="task"><span class="dot"></span><span>整理选题池</span><span>09:30</span></div>
+              <div class="task"><span class="dot"></span><span>生成卡片草稿</span><span>14:00</span></div>
+            </div>
+            <div class="canvas"><div class="canvas-card">内容入口</div><div class="canvas-card alt">发布出口</div></div>
+          </div>
+          <p class="verdict" style="padding:0 18px 18px;">判断：功能页最稳，交互色清楚，不容易疲劳。</p>
+        </article>
+
+        <article class="scheme two preview app-preview">
+          <span class="scheme-label">Scheme 02</span>
+          <div class="app-topbar"><span class="app-brand">Esther OS</span><span class="pill">同步</span></div>
+          <div class="app-tabs"><span class="app-tab active">今日</span><span class="app-tab">项目</span><span class="app-tab">素材</span></div>
+          <div class="app-body">
+            <div class="metric"><strong>12</strong><p>今日待处理素材</p></div>
+            <div class="task-list">
+              <div class="task"><span class="dot"></span><span>整理选题池</span><span>09:30</span></div>
+              <div class="task"><span class="dot"></span><span>生成卡片草稿</span><span>14:00</span></div>
+            </div>
+            <div class="canvas"><div class="canvas-card">内容入口</div><div class="canvas-card alt">发布出口</div></div>
+          </div>
+          <p class="verdict" style="padding:0 18px 18px;">判断：也适合工具页，比方案一更柔和。</p>
+        </article>
+
+        <article class="scheme three preview app-preview">
+          <span class="scheme-label">Scheme 03</span>
+          <div class="app-topbar"><span class="app-brand">Esther OS</span><span class="pill">同步</span></div>
+          <div class="app-tabs"><span class="app-tab active">今日</span><span class="app-tab">项目</span><span class="app-tab">素材</span></div>
+          <div class="app-body">
+            <div class="metric"><strong>12</strong><p>今日待处理素材</p></div>
+            <div class="task-list">
+              <div class="task"><span class="dot"></span><span>整理选题池</span><span>09:30</span></div>
+              <div class="task"><span class="dot"></span><span>生成卡片草稿</span><span>14:00</span></div>
+            </div>
+            <div class="canvas"><div class="canvas-card">内容入口</div><div class="canvas-card alt">发布出口</div></div>
+          </div>
+          <p class="verdict" style="padding:0 18px 18px;">判断：可做品牌工具，但橙色只能当状态/重点，不适合大量控件。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="scenario">
+      <header class="scenario-head">
+        <div class="scenario-num">04</div>
+        <div>
+          <h2 class="scenario-title">小红书 3:4 图文卡片</h2>
+          <p class="scenario-desc">看封面识别度、手机信息密度和截图传播感。这个场景最吃视觉记忆点。</p>
+        </div>
+      </header>
+      <div class="compare-grid">
+        <article class="scheme one preview xhs-preview">
+          <span class="scheme-label">Scheme 01</span>
+          <div class="xhs-card">
+            <div class="xhs-visual"><div class="xhs-title">内容系统怎么搭</div></div>
+            <div class="xhs-content">
+              <h3>稳定知识感</h3>
+              <p>适合系列教程、长期栏目和低压阅读。</p>
+              <p class="verdict">判断：耐看，但封面抓人程度一般。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="scheme two preview xhs-preview">
+          <span class="scheme-label">Scheme 02</span>
+          <div class="xhs-card">
+            <div class="xhs-visual"><div class="xhs-title">内容系统怎么搭</div></div>
+            <div class="xhs-content">
+              <h3>温暖个人感</h3>
+              <p>适合生活方式、个人经验和柔和教程。</p>
+              <p class="verdict">判断：亲和，但需要强标题撑住。</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="scheme three preview xhs-preview">
+          <span class="scheme-label">Scheme 03</span>
+          <div class="xhs-card">
+            <div class="xhs-visual"><div class="xhs-title">内容系统怎么搭</div></div>
+            <div class="xhs-content">
+              <h3>海报封面感</h3>
+              <p>适合观点、活动、封面和强情绪内容。</p>
+              <p class="verdict">判断：这个场景里方案三优势最大。</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

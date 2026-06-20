@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>七套配色 × 教程页 Demo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, 'PingFang SC', sans-serif;
+    background: #f0ede5;
+    padding: 3rem 2rem;
+    color: #1A1A2E;
+  }
+  h1 { text-align: center; font-size: 2rem; margin-bottom: 0.5rem; }
+  .sub { text-align: center; color: #666; margin-bottom: 2.5rem; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    transition: transform .15s, box-shadow .15s;
+    display: block;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(0,0,0,.1); }
+  .card .swatches { display: flex; gap: 8px; margin-bottom: 1rem; }
+  .card .swatches span {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: block; border: 2px solid rgba(0,0,0,.06);
+  }
+  .card h3 { font-size: 1.05rem; margin-bottom: 0.3rem; }
+  .card p { font-size: 0.82rem; color: #888; }
+</style>
+</head>
+<body>
+<h1>七套配色 × 教程页 Demo</h1>
+<p class="sub">基于 cola-ob-sharing 分享会页面，每套配色一个独立页面</p>
+<div class="grid">
+
+  <a class="card" href="scheme1-green-tutorial.html">
+    <div class="swatches">
+      <span style="background:#15865C"></span>
+      <span style="background:#ADC965"></span>
+      <span style="background:#008A5B"></span>
+    </div>
+    <h3>🌿 植物绿系</h3>
+    <p>沉静、质感、自然</p>
+  </a>
+  <a class="card" href="scheme2-warm-tutorial.html">
+    <div class="swatches">
+      <span style="background:#6d98ba"></span>
+      <span style="background:#f59356"></span>
+      <span style="background:#ff6366"></span>
+    </div>
+    <h3>🧡 暖奶油珊瑚</h3>
+    <p>温暖、人文、冷暖平衡</p>
+  </a>
+  <a class="card" href="scheme3-clay-tutorial.html">
+    <div class="swatches">
+      <span style="background:#D75926"></span>
+      <span style="background:#BDB8B6"></span>
+      <span style="background:#1B1B18"></span>
+    </div>
+    <h3>🏺 陶橙暖灰</h3>
+    <p>艺术海报、克制冲击</p>
+  </a>
+  <a class="card" href="scheme4-navy-tutorial.html">
+    <div class="swatches">
+      <span style="background:#202850"></span>
+      <span style="background:#F8C840"></span>
+      <span style="background:#00A8F8"></span>
+    </div>
+    <h3>💙 海军蓝+麦黄</h3>
+    <p>清爽、数字化、活泼</p>
+  </a>
+  <a class="card" href="scheme5-forest-tutorial.html">
+    <div class="swatches">
+      <span style="background:#183828"></span>
+      <span style="background:#509850"></span>
+      <span style="background:#A0C0A0"></span>
+    </div>
+    <h3>🌲 奶油纸+森林绿</h3>
+    <p>复古自然、手作</p>
+  </a>
+  <a class="card" href="scheme6-tropical-tutorial.html">
+    <div class="swatches">
+      <span style="background:#D85820"></span>
+      <span style="background:#E8A840"></span>
+      <span style="background:#802050"></span>
+    </div>
+    <h3>🏝️ 热带橙+芒果黄</h3>
+    <p>热带、情绪化、度假</p>
+  </a>
+  <a class="card" href="scheme7-pine-tutorial.html">
+    <div class="swatches">
+      <span style="background:#306848"></span>
+      <span style="background:#D090B8"></span>
+      <span style="background:#F4D758"></span>
+    </div>
+    <h3>🎸 深松绿+粉紫</h3>
+    <p>潮流、数字感、独立杂志</p>
+  </a>
+</div>
+</body>
+</html>
