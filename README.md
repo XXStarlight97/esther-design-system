@@ -71,7 +71,7 @@ esther-design-system/
 │   ├── template-app.html           App型模板
 │   ├── template-cards.html         小红书卡片模板
 │   ├── html2canvas.min.js          卡片导出依赖
-│   └── avatar.jpg                  IP头像
+│   └── face.jpg                  IP头像
 └── references/                 ← 规则和零件(知识库)
     ├── layouts.md                  15种布局模式(附完整代码)
     ├── components.md               组件库(20+组件,完整HTML+CSS)

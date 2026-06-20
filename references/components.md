@@ -1820,7 +1820,7 @@ Hover时出现品牌渐变顶条。
 <div class="hero-cluster">
   <div class="ring"></div>
   <div class="avatar-glow"></div>
-  <img class="avatar-img" src="avatar.jpg" alt="">
+  <img class="avatar-img" src="face.jpg" alt="">
   <span class="orbit-item" style="top:0;right:10%">标签1</span>
   <span class="orbit-item" style="bottom:10%;left:0">标签2</span>
 </div>
